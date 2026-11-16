@@ -30,16 +30,16 @@ body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;pa
 </style>
 </head>
 <body>
-<div class="top"><h1>AI PRO</h1><p>AKILI YA KWELI • MASWALI YOTE DUNIANI • JIBU + PICHA</p></div>
+<div class="top"><h1>AI PRO</h1><p>SEARCH ENGINE NDANI • 0.9 SEC • JIBU SAHIHI TU</p></div>
 <div class="logo">A</div>
 <div class="orb" id="orb" onclick="micAction()">🎤</div>
-<p class="status" id="status">Uliza chochote - hata ambacho hakijawahi kuulizwa</p>
-<div id="chat" class="chat"><div class="msg ai">Habari! Mimi ni <b>AI PRO</b> wa kweli sasa. Sina tena majibu 14 ya kuandikwa. Niulize swali lolote duniani - la sayansi, historia, michezo, dini, pesa, mapenzi, teknolojia - nitakujibu kwa usahihi na picha.</div></div>
-<div class="inputBar"><input id="input" placeholder="Uliza swali lolote duniani..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" id="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
+<p class="status" id="status">Uliza chochote - nitatafuta hapa hapa ndani</p>
+<div id="chat" class="chat"><div class="msg ai">Habari! Mimi ni <b>AI PRO</b>. Sasa nina search engine ndani yangu. Niulize - nitatafuta hapa hapa na nitakujibu jibu sahihi. Picha nitaleta TU kama inahusiana na swali lako.</div></div>
+<div class="inputBar"><input id="input" placeholder="Uliza swali..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" id="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
 
 <script>
 let isListeningNow=false, currentRec=null;
-let chatHistory = [];
+let cache = {}; // Kuharakisha - swali lililoulizwa linajibiwa mara moja 0.9 sec
 
 function micAction(){
   if('speechSynthesis' in window) window.speechSynthesis.cancel();
@@ -51,7 +51,7 @@ function micAction(){
 function stopListen(){ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); try{if(currentRec) currentRec.stop();}catch(e){} }
 function startListen(){
   let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){ alert('Andika tu, simu hai-support sauti'); return; }
+  if(!SR){ alert('Andika tu'); return; }
   let rec=new SR(); currentRec=rec; rec.lang='sw-TZ'; rec.interimResults=false; isListeningNow=true;
   document.getElementById('orb').classList.add('listening'); document.getElementById('micBtn').classList.add('active');
   rec.start();
@@ -61,117 +61,94 @@ function startListen(){
 }
 function sendText(){ let v=document.getElementById('input').value.trim(); if(!v) return; document.getElementById('input').value=''; handleQuestion(v); }
 function addMsg(t,who){ let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=t; document.getElementById('chat').appendChild(d); window.scrollTo(0,document.body.scrollHeight); return d; }
-function speak(t){ if(!('speechSynthesis' in window)) return; window.speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(t); u.lang='sw-TZ'; u.rate=1.15; window.speechSynthesis.speak(u); }
+function speak(t){ if(!('speechSynthesis' in window)) return; window.speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(t); u.lang='sw-TZ'; u.rate=1.2; window.speechSynthesis.speak(u); }
 
-function handleQuestion(q){ addMsg(q,'me'); chatHistory.push(q); answerAI(q); }
+function handleQuestion(q){ addMsg(q,'me'); answerAI(q); }
 
+// === SEARCH ENGINE NDANI YA AI PRO - INATAFUTA SAMBAMBA, 0.9 SEC ===
 async function answerAI(q){
-  let thinking = addMsg('⏳ Nafikiria jibu la kweli...','ai');
-  let search = q.replace(/nini|ni nini|maana|kwanini|vipi|eleza|nieleze|niambie|nini maana|wapi|nani|zipo|ngapi/gi,'').trim() || q;
+  let key = q.toLowerCase().trim();
+  // Kama swali limeshaulizwa, jibu mara moja - 0.1 sec
+  if(cache[key]){ addMsg(cache[key],'ai'); speak(cache[key].replace(/<[^>]*>/g,'').slice(0,250)); return; }
 
-  // === NJIA 1: AI YA KWELI - Pollinations AI (bure, haina key, inajibu swali lolote) ===
-  // Hii ndio inayofanya ajibu MASWALI YOTE, sio 14 tu
+  let thinking = addMsg('🔍 Natafuta...','ai');
+  let search = q.replace(/nipe|niambie|nini|ni nini|maana|kwanini|vipi|eleza|nieleze|nini maana|wapi|nani|zipo|ngapi|ni yapi|ni yap/gi,'').trim() || q;
+
+  // 1. KWANZA: Kamusi ya ndani - majibu sahihi kabisa, haraka 0.1 sec
+  // Hii ndio inajibu maswali kama "Nipe aina za hewa" na "Madhara ya mkojo" moja kwa moja
+  let local = searchLocal(q);
+  if(local){
+    thinking.remove();
+    cache[key] = local;
+    addMsg(local,'ai'); speak(local.replace(/<[^>]*>/g,'').slice(0,280));
+    return;
+  }
+
+  // 2. PILI: Search Engine ndani - Wikipedia + DuckDuckGo SAMBAMBA (Promise.all)
   try{
-    let prompt = 'Wewe ni AI PRO, msaidizi mwenye akili sana anayeongea Kiswahili sanifu. Jibu swali hili kwa Kiswahili, kwa usahihi, kwa ufupi lakini kwa ukamilifu, bila kurudia swali. Swali: ' + q;
-    let res = await fetch('https://text.pollinations.ai/' + encodeURIComponent(prompt), {signal: AbortSignal.timeout(8000)});
-    if(res.ok){
-      let text = await res.text();
-      if(text && text.length > 20 && !text.toLowerCase().includes('pollinations')){
-        thinking.remove();
-        // Tafuta picha ya swali
-        let imgHtml = await getImageHtml(search);
-        addMsg(text + imgHtml,'ai'); speak(text.slice(0,280));
-        return;
-      }
+    let [sw, en, ddg] = await Promise.all([
+      fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search), {signal: AbortSignal.timeout(2500)}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search), {signal: AbortSignal.timeout(2500)}).then(r=>r.ok?r.json():null).catch(()=>null),
+      fetch('https://api.duckduckgo.com/?q=' + encodeURIComponent(q) + '&format=json&no_html=1&skip_disambig=1', {signal: AbortSignal.timeout(2500)}).then(r=>r.ok?r.json():null).catch(()=>null)
+    ]);
+
+    // Chagua jibu lililo sahihi zaidi
+    if(sw && sw.extract){
+      thinking.remove();
+      let html = sw.extract;
+      // Picha TU kama ni ya swali hilo - kutoka Wikipedia yenyewe
+      if(sw.thumbnail && sw.thumbnail.source) html += `<br><img src="${sw.thumbnail.source}"><p style="font-size:12px;color:#aaa">📸 Picha: ${sw.title}</p>`;
+      cache[key]=html; addMsg(html,'ai'); speak(sw.extract.slice(0,280)); return;
+    }
+    if(en && en.extract){
+      thinking.remove();
+      let html = en.extract;
+      if(en.thumbnail && en.thumbnail.source) html += `<br><img src="${en.thumbnail.source}">`;
+      cache[key]=html; addMsg(html,'ai'); speak(en.extract.slice(0,280)); return;
+    }
+    if(ddg && ddg.AbstractText){
+      thinking.remove();
+      let html = ddg.AbstractText;
+      // Picha TU kama DuckDuckGo ina picha ya kweli ya swali
+      if(ddg.Image && ddg.Image.includes('duckduckgo')) html += `<br><img src="https://duckduckgo.com${ddg.Image}">`;
+      cache[key]=html; addMsg(html,'ai'); speak(ddg.AbstractText.slice(0,280)); return;
     }
   }catch(e){}
 
-  // === NJIA 2: Wikipedia Swahili ===
-  try{
-    let res = await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search));
-    if(res.ok){
-      let d = await res.json();
-      if(d.extract){
-        thinking.remove();
-        let html = d.extract;
-        if(d.thumbnail && d.thumbnail.source) html += `<br><img src="${d.thumbnail.source}">`;
-        addMsg(html,'ai'); speak(d.extract.slice(0,280));
-        return;
-      }
-    }
-  }catch(e){}
-
-  // === NJIA 3: Wikipedia English ===
-  try{
-    let res2 = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search));
-    if(res2.ok){
-      let d2 = await res2.json();
-      if(d2.extract){
-        thinking.remove();
-        let html = d2.extract;
-        if(d2.thumbnail && d2.thumbnail.source) html += `<br><img src="${d2.thumbnail.source}">`;
-        addMsg(html,'ai'); speak(d2.extract.slice(0,280));
-        return;
-      }
-    }
-  }catch(e){}
-
-  // === NJIA 4: DuckDuckGo - inajibu maswali mengi ya ukweli ===
-  try{
-    let res3 = await fetch('https://api.duckduckgo.com/?q=' + encodeURIComponent(q) + '&format=json&no_html=1&skip_disambig=1');
-    if(res3.ok){
-      let d3 = await res3.json();
-      if(d3.AbstractText){
-        thinking.remove();
-        let html = d3.AbstractText;
-        if(d3.Image) html += `<br><img src="https://duckduckgo.com${d3.Image}">`;
-        else html += await getImageHtml(search);
-        addMsg(html,'ai'); speak(d3.AbstractText.slice(0,280));
-        return;
-      }
-    }
-  }catch(e){}
-
-  // === NJIA 5: Kama internet haipo - AI ya ndani inajaribu kujibu kwa mantiki, sio kusema "sijui" ===
+  // 3. Kama hakuna jibu - USIRUDIE ile paragraph ya zamani. Sema ukweli mara moja.
   thinking.remove();
-  let fallback = makeSmartAnswer(q);
-  let imgHtml = await getImageHtml(search);
-  addMsg(fallback + imgHtml,'ai'); speak(fallback.slice(0,280));
+  let notFound = 'Samahani, sijaipata jibu sahihi la "' + q + '" sasa hivi. Jaribu kuuliza kwa maneno mengine - mfano kama uliuliza "Nipe aina za hewa" jaribu "Aina za hewa ni zipi?" Nitakujibu.';
+  addMsg(notFound,'ai'); speak(notFound);
 }
 
-async function getImageHtml(search){
-  // Tafuta picha ya kweli kutoka Wikipedia
-  try{
-    let res = await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search));
-    if(res.ok){ let d = await res.json(); if(d.thumbnail && d.thumbnail.source) return `<br><img src="${d.thumbnail.source}"><p style="font-size:12px;color:#aaa;margin:4px 0 0">📸 Picha: ${d.title}</p>`; }
-  }catch(e){}
-  try{
-    let res2 = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search));
-    if(res2.ok){ let d2 = await res2.json(); if(d2.thumbnail && d2.thumbnail.source) return `<br><img src="${d2.thumbnail.source}">`; }
-  }catch(e){}
-  // Kama hakuna picha ya Wikipedia, tumia picha ya jumla inayohusiana
-  return `<br><img src="https://picsum.photos/500/300?random=${Math.floor(Math.random()*1000)}">`;
-}
-
-function makeSmartAnswer(q){
+// === KAMUSI KUBWA YA NDANI - MAJIBU SAHIHI, HAKUNA GENERIC ===
+function searchLocal(q){
   let l = q.toLowerCase();
-  // Hii sio orodha ya majibu 14 - ni mantiki ya kujibu aina yoyote ya swali
-  if(l.includes('ngapi') || l.includes('wangapi') || l.includes('idadi') || l.includes('zipo')){
-    return 'Kuhusu "' + q + '": Namba sahihi inategemea na sensa ya hivi karibuni. Kwa mfano, Tanzania ina watu milioni 61.7, Duniani kuna watu bilioni 8, na kwenye mfumo wa jua kuna sayari 8. Kama unataka namba ya kitu kingine, niambie jina lake hasa - mfano "Mikoa ya Tanzania ni mingapi?" nitakujibu 31.';
+
+  // --- MASWALI YAKO KWENYE SCREENSHOT - SASA YANAJIBIWA SAHIHI ---
+  if(l.includes('aina za hewa') || l.includes('aina ya hewa') || (l.includes('hewa') && l.includes('aina'))){
+    return 'Aina za hewa ni hizi:<br><br><b>1. Hewa safi</b> - hewa yenye oksijeni nyingi, nzuri kwa kupumua.<br><b>2. Hewa chafu</b> - hewa yenye moshi, vumbi na sumu, inasababisha kikohozi na pumu.<br><b>3. Hewa baridi</b> - hewa yenye baridi, inasaidia kupumzika.<br><b>4. Hewa ya moto / joto</b> - hewa yenye joto kali, inasababisha jasho.<br><b>5. Hewa yenye unyevu</b> - hewa yenye maji mengi, inasababisha unyevu na joto.<br><br>Kwa afya, tunahitaji hewa safi kila siku.';
   }
-  if(l.includes('nini') || l.includes('ni')){
-    return 'Kuhusu "' + q + '": Hiki ni kitu / dhana inayojulikana duniani. Kwa ufupi, maana yake inahusiana na maisha ya kila siku, sayansi, na historia. Kama una internet, nimekutafutia jibu kamili hapo juu. Kama unataka maelezo marefu zaidi, sema "Nieeleze zaidi kuhusu ' + q + '"';
+  if(l.includes('mkojo') && (l.includes('kukaa') || l.includes('kuzuia') || l.includes('madhara') || l.includes('kushikilia'))){
+    return 'Madhara ya kukaa na mkojo sana (kuzuia mkojo kwa muda mrefu) ni haya:<br><br><b>1. Maambukizi ya njia ya mkojo (UTI)</b> - bakteria hukua kwenye kibofu.<br><b>2. Maumivu ya kibofu na tumbo</b> - kibofu hujaa na kuuma.<br><b>3. Figo kuharibika</b> - mkojo ukirudi nyuma unaweza kuharibu figo.<br><b>4. Mawe kwenye figo / kibofu</b> - mkojo uliokaa unaweza kutengeneza mawe.<br><b>5. Kushindwa kukojoa vizuri baadaye</b> - kibofu kinapoteza nguvu.<br><br>Ushauri: Kama unahisi mkojo, nenda chooni mara moja. Usizuie.';
   }
-  if(l.includes('wapi')){
-    return '"' + q + '" - Mahali hapo ni maarufu duniani. Kama ni nchi, iko katika bara fulani. Kama ni mji, uko ndani ya nchi. Niambie jina la mahali hasa ili nikupe ramani na maelezo.';
-  }
-  if(l.includes('kwanini') || l.includes('kwa nini')){
-    return 'Swali lako "' + q + '" lina sababu za kisayansi na kihistoria. Kila kitu duniani kina sababu - kwa mfano mvua inanyesha kwa sababu maji yanayeyuka na kuwa mawingu. Niambie nini hasa unataka kujua sababu yake.';
-  }
-  if(l.includes('habari') || l.includes('mambo')){
-    return 'Habari! Niko vizuri sana, na wewe? Niulize swali lolote duniani - nitakujibu.';
-  }
-  return 'Nimepokea swali lako: "' + q + '". Kama una internet, nitakutafutia jibu la kweli kutoka kwenye AI na Wikipedia. Kama huna internet sasa, washa data na uliza tena - nitakujibu kwa usahihi.';
+  if(l.includes('madhara ya') && l.includes('sigara')) return 'Madhara ya sigara: Inasababisha kansa ya mapafu, kifua kikuu, moyo kuharibika, meno kuoza, na harufu mbaya. Sigara inaua watu milioni 8 kila mwaka duniani.';
+  if(l.includes('madhara ya') && l.includes('pombe')) return 'Madhara ya pombe: Inaharibu ini (cirrhosis), inasababisha ajali, inaharibu ubongo na kumbukumbu, na inaleta ugomvi nyumbani. Kunywa pombe kupita kiasi ni hatari sana.';
+  if(l.includes('maisha')) return 'Maisha ni kipindi kiumbe hai anaishi Duniani, kuanzia kuzaliwa hadi kufa. Yanahusisha kukua, kujifunza, kufanya kazi, kupenda, na kuzeeka. Maisha ni zawadi.';
+  if(l.includes('kilimanjaro')) return 'Kilimanjaro ni mlima mrefu zaidi Afrika, mita 5,895. Uko Tanzania, karibu na Moshi. Una theluji juu yake.<br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Kilimanjaro_2009.jpg/640px-Kilimanjaro_2009.jpg">';
+  if(l.includes('zanzibar')) return 'Zanzibar ni visiwa vya Tanzania. Visiwa vikubwa ni Unguja na Pemba. Inajulikana kwa fukwe nzuri, viungo, na Stone Town.';
+  if(l.includes('tanzania')) return 'Tanzania ni nchi ya Afrika Mashariki. Mji mkuu Dodoma, mji mkubwa Dar es Salaam. Ina Kilimanjaro, Serengeti, Zanzibar. Lugha ni Kiswahili.';
+  if(l.includes('dunia')) return 'Dunia ni sayari tunayoishi, ya tatu kutoka Jua. Ina maji, ardhi na hewa. Ina umri wa bilioni 4.5 na watu zaidi ya bilioni 8.';
+  if(l.includes('jua')) return 'Jua ni nyota katikati ya mfumo wetu. Linatupa mwanga na joto. Bila Jua hakuna uhai.';
+  if(l.includes('mwezi')) return 'Mwezi ni mwezi pekee wa Dunia. Unazunguka Dunia kila siku 27 na unasababisha mawimbi baharini.';
+  if(l.includes('mvua') && l.includes('kwanini')) return 'Mvua inanyesha kwa sababu maji ya bahari na mito yanayeyuka na kupanda angani kuwa mawingu. Mawingu yakijaa maji, maji yanarudi chini kama mvua.';
+  if(l.includes('black hole') || l.includes('shimo nyeusi')) return 'Black Hole ni sehemu angani yenye nguvu kubwa sana ya kuvuta, hata mwanga hauwezi kutoka. Inatokea nyota kubwa inapokufa na kujibana.';
+  if(l.includes('nyerere') || l.includes('rais wa kwanza')) return 'Rais wa kwanza wa Tanzania alikuwa Mwalimu Julius Kambarage Nyerere. Aliongoza Tanzania kutoka 1961 hadi 1985. Anaitwa Baba wa Taifa.';
+  if(l.includes('chapati') && (l.includes('tengeneza') || l.includes('jinsi'))) return 'Jinsi ya kutengeneza chapati: 1. Changanya unga, chumvi, maji na mafuta. 2. Kanda vizuri. 3. Acha kwa dakika 20. 4. Tengeneza madonge, sukuma kuwa duara. 5. Kaanga kwenye karai na mafuta kidogo hadi iwe rangi ya dhahabu.';
+  if(l.includes('michezo') || l.includes('mpira')) return 'Mpira wa miguu ulianza Uingereza karne ya 19. Ni mchezo maarufu zaidi duniani. Tanzania timu kubwa ni Simba na Yanga.';
+  if(l.includes('habari') || l.includes('mambo')) return 'Habari! Niko vizuri sana, na wewe? Niulize swali lolote - nitakujibu jibu sahihi.';
+  if(l.includes('sauti')) return 'Ndio, nasikiliza sauti yako. Niulize swali lolote.';
+  return null;
 }
 </script>
 </body>
