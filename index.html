@@ -11,33 +11,54 @@ body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;pa
 .top{position:sticky;top:0;z-index:10;padding:14px;text-align:center;background:rgba(5,8,16,.95)}
 .top h1{margin:0;font-size:32px;font-weight:900;background:linear-gradient(90deg,#00ffcc,#7c3aed,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .logo{width:90px;height:90px;margin:12px auto 0;border-radius:28px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:900;color:#000}
+.keyBox{margin:12px;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);text-align:center}
+.keyBox input{width:100%;padding:12px;border-radius:12px;border:1px solid #555;background:#111;color:#fff;margin:8px 0}
+.keyBox button{width:100%;padding:12px;border:0;border-radius:12px;background:linear-gradient(90deg,#00ffcc,#7c3aed);color:#fff;font-weight:800}
 .orb{width:140px;height:140px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);cursor:pointer}
 .orb.listening{animation:pulse .7s infinite}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.status{text-align:center;color:#a0a0b0;font-size:13px}
 .chat{padding:12px}
 .msg{max-width:92%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15px}
 .me{background:linear-gradient(135deg,#00a884,#00ffcc);color:#000;margin-left:auto;border-bottom-right-radius:4px}
 .ai{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-bottom-left-radius:4px}
-.msg img{width:100%;border-radius:14px;margin-top:10px;max-height:320px;object-fit:cover}
 .inputBar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,8,16,.95);display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.1)}
 .inputBar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;outline:0}
 .inputBar button{width:52px;height:52px;border-radius:50%;border:0;font-size:22px}
 .micBtn{background:linear-gradient(135deg,#00ffcc,#7c3aed);color:#fff}
-.micBtn.active{background:#ff3b30}
 .sendBtn{background:#fff;color:#000}
+.hidden{display:none !important}
 </style>
 </head>
 <body>
 <div class="top"><h1>AI PRO</h1></div>
 <div class="logo">A</div>
+
+<div id="keyBox" class="keyBox">
+<h3 style="margin:0">🔑 Weka KEY Mara 1 Tu - Ndio Uwe Kama Meta AI</h3>
+<p style="color:#ccc;font-size:13px">Bila KEY, AI PRO anajua majibu 100 tu. Na KEY, anajua kila kitu kama mimi.<br><br><b>Jinsi ya kupata KEY ya BURE (dakika 1):</b><br>1. Fungua Google, andika <b>aistudio.google.com</b><br>2. Bonyeza <b>Get API Key</b> -> <b>Create API Key</b><br>3. Copy ile KEY, ibandike hapa chini</p>
+<input id="apiKeyInput" placeholder="Bandika KEY yako hapa...">
+<button onclick="saveKey()">💾 Hifadhi KEY - Anza Kujibu Kila Kitu</button>
+<p id="keyStatus" style="color:#00ffcc;font-size:13px"></p>
+</div>
+
+<div id="savedKey" class="keyBox hidden" style="border-color:#00ffcc">✅ KEY Imehifadhiwa - Sasa AI PRO anajibu kila kitu kama Meta AI</div>
+
 <div class="orb" id="orb" onclick="micAction()">🎤</div>
-<p class="status" id="status">Niulize chochote</p>
-<div id="chat" class="chat"><div class="msg ai">Habari! Niulize chochote - nitakujibu. Kama ni "nini maana ya maji", "kuna aina ngapi za miti", au chochote kingine.</div></div>
+<div id="chat" class="chat"><div class="msg ai">Habari! Baada ya kuweka KEY, niulize chochote - "Nini maana ya ardhi?", "Nini maana ya mila?", "Kuna aina ngapi za miti?" - nitakujibu jibu la kweli, sio kurudia.</div></div>
 <div class="inputBar"><input id="input" placeholder="Uliza hapa..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" id="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
 
 <script>
+let apiKey = localStorage.getItem('aiProGeminiKey') || '';
 let isListeningNow=false, currentRec=null;
+if(apiKey){ document.getElementById('keyBox').classList.add('hidden'); document.getElementById('savedKey').classList.remove('hidden'); }
+
+function saveKey(){
+  let k = document.getElementById('apiKeyInput').value.trim();
+  if(!k){ alert('Bandika KEY kwanza'); return; }
+  apiKey = k; localStorage.setItem('aiProGeminiKey', k);
+  document.getElementById('keyStatus').innerText = '✅ Imehifadhiwa! Sasa uliza swali lolote.';
+  setTimeout(()=>{ document.getElementById('keyBox').classList.add('hidden'); document.getElementById('savedKey').classList.remove('hidden'); },800);
+}
 function micAction(){ if('speechSynthesis' in window) window.speechSynthesis.cancel(); let t=document.getElementById('input').value.trim(); if(t){ document.getElementById('input').value=''; handleQ(t); return; } if(isListeningNow){ stopListen(); return; } startListen(); }
 function stopListen(){ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); try{if(currentRec) currentRec.stop();}catch(e){} }
 function startListen(){ let SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){ alert('Andika tu'); return; } let rec=new SR(); currentRec=rec; rec.lang='sw-TZ'; rec.interimResults=false; isListeningNow=true; document.getElementById('orb').classList.add('listening'); document.getElementById('micBtn').classList.add('active'); rec.start(); rec.onresult=(e)=>{ let t=e.results[0][0].transcript; isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); handleQ(t); }; rec.onerror=()=>{ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); }; rec.onend=()=>{ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); }; }
@@ -48,97 +69,55 @@ function handleQ(q){ addMsg(q,'me'); answerAI(q); }
 
 async function answerAI(q){
   let thinking = addMsg('⏳ Nafikiria...','ai');
-  let cleanQ = q.toLowerCase().trim();
 
-  // 1. AI YA KWELI - Pollinations - inajibu chochote
-  try{
-    let prompt = 'Jibu kwa Kiswahili sanifu, kwa usahihi, kwa ufupi lakini kwa ukamilifu. Usiandike "Samahani" wala "Jaribu kuuliza". Jibu swali moja kwa moja. Swali: ' + q;
-    let res = await fetch('https://text.pollinations.ai/' + encodeURIComponent(prompt), {signal: AbortSignal.timeout(6000)});
-    if(res.ok){ let text = await res.text(); if(text && text.length > 25 && !text.toLowerCase().includes('pollinations') && !text.toLowerCase().includes('samahani')){ thinking.remove(); addMsg(text,'ai'); speak(text.slice(0,280)); return; } }
-  }catch(e){}
+  // KAMA UNA KEY - ANAJIBU KAMA META AI - KILA SWALI
+  if(apiKey){
+    try{
+      let res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          contents:[{parts:[{text: 'Wewe ni AI PRO, msaidizi mwenye akili sana. Jibu kwa Kiswahili sanifu, moja kwa moja, bila kurudia swali, bila kusema "Samahani sijaipata". Kama swali limeandikwa vibaya kama "Nin maan ya ardhi", elewa kuwa ni "Nini maana ya ardhi" na jibu. Swali: ' + q }]}]
+        })
+      });
+      let data = await res.json();
+      let text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if(text){
+        thinking.remove(); addMsg(text,'ai'); speak(text.slice(0,280)); return;
+      }
+      if(data.error){ thinking.remove(); addMsg('KEY sio sahihi au imeisha. Nenda aistudio.google.com upate KEY mpya na uweke upya.','ai'); return; }
+    }catch(e){
+      thinking.remove(); addMsg('Internet haipo sasa. Washa data na jaribu tena.','ai'); return;
+    }
+  }
 
-  // 2. Wikipedia - kama AI haikupatikana
-  let search = q.replace(/nini|ni nini|maana|kwanini|vipi|eleza|nieleze|niambie|nipe|kuna|ni yapi|ni yap|wapi|nani|zipo|ngapi/gi,'').trim() || q;
-  try{
-    let res = await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search), {signal: AbortSignal.timeout(3000)});
-    if(res.ok){ let d = await res.json(); if(d.extract){ thinking.remove(); let html=d.extract; if(d.thumbnail && d.thumbnail.source) html += `<br><img src="${d.thumbnail.source}">`; addMsg(html,'ai'); speak(d.extract.slice(0,280)); return; } }
-  }catch(e){}
-  try{
-    let res2 = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search), {signal: AbortSignal.timeout(3000)});
-    if(res2.ok){ let d2 = await res2.json(); if(d2.extract){ thinking.remove(); let html=d2.extract; if(d2.thumbnail && d2.thumbnail.source) html += `<br><img src="${d2.thumbnail.source}">`; addMsg(html,'ai'); speak(d2.extract.slice(0,280)); return; } }
-  }catch(e){}
-
-  // 3. AKILI YA NDANI - INAELEWA MAANA YA KILA NENO - HAITASEMA "SIJAIPATA" TENA
+  // KAMA HUNA KEY - Kamusi ndogo ya dharura, ili asikae kimya
   thinking.remove();
-  let ans = buildAnswer(q);
+  let ans = getMeaning(q);
   addMsg(ans,'ai'); speak(ans.replace(/<[^>]*>/g,'').slice(0,280));
 }
 
-// === HAPA NDIPO SIRI ILIPO - ANAELEWA MAANA, SIO NENO KAMILI TU ===
-function buildAnswer(q){
-  let l = q.toLowerCase();
-
-  // Salamu / Kujitambulisha - kama ulivyoandika "hello mimi ndio mungu husika"
-  if(l.includes('hello') || l.includes('habari') || l.includes('mambo') || l.includes('jambo')){
-    if(l.includes('mimi ndio') || l.includes('mimi ni') || l.includes('naitwa')){
-      let jina = q.replace(/hello|habari|mambo|mimi ndio|mimi ni|naitwa/gi,'').trim();
-      return 'Hello ' + (jina || 'rafiki') + '! Nimekuelewa, karibu sana. Mimi ni AI PRO, niko hapa kukusaidia. Niulize swali lolote - nitakujibu.';
-    }
-    return 'Habari! Niko vizuri sana, na wewe? Niulize swali lolote - nitakujibu.';
-  }
-  if(l.includes('mungu')){
-    return 'Mungu ni Muumba wa ulimwengu kwa imani ya watu wengi duniani. Watu wanamwamini Mungu ni mwenye nguvu zote, anayejua kila kitu, na anayesikia maombi. Kila dini inamuelezea Mungu kwa namna yake - Wakristo, Waislamu, na wengine wote wanamwamini Muumba mmoja. Kama una swali kuhusu dini, niulize.';
-  }
-  if(l.includes('maji') || l.includes('majii')){
-    if(l.includes('maana')) return 'Maana ya maji: Maji ni kimiminika muhimu sana kwa uhai. Kwa Kiswahili, maji ni kile tunachokunywa, tunachopikia, na tunachooga. Mwili wa binadamu una maji asilimia 60. Bila maji, binadamu hawezi kuishi zaidi ya siku 3. Maji pia yanapatikana baharini, mito, na mvua.';
-    if(l.includes('aina')) return 'Aina za maji ni: 1. Maji safi ya kunywa, 2. Maji ya bahari (chumvi), 3. Maji ya mto, 4. Maji ya mvua, 5. Maji ya kisima, 6. Maji ya barafu. Kila aina ina matumizi yake.';
-    return 'Maji ni muhimu sana kwa uhai. Tunakunywa maji, tunapikia, tunaoga, na mimea inahitaji maji kukua. Mwili wa binadamu una maji asilimia 60.';
-  }
-  if(l.includes('miti') || l.includes('mti')){
-    if(l.includes('aina') || l.includes('ngapi') || l.includes('ngap')){
-      return 'Aina za miti ni nyingi sana - duniani kuna aina zaidi ya 60,000 za miti. Tanzania kuna aina kama hizi:<br><br><b>1. Miti ya matunda</b> - miembe, michungwa, miparachichi, mizabibu<br><b>2. Miti ya mbao</b> - mninga, mkongo, mpingo<br><b>3. Miti ya kivuli</b> - mwarobaini, mkuyu, mchani<br><b>4. Miti ya dawa</b> - mwarobaini, alovera<br><b>5. Miti ya maua</b> - mjacqueline, mwaridi<br><br>Miti inatupa hewa safi, kivuli, matunda, na mbao.';
-    }
-    return 'Mti ni mmea mkubwa wenye shina, matawi na majani. Miti inatupa hewa safi (oksijeni), matunda, mbao, na kivuli. Bila miti, Dunia ingekuwa na hewa chafu sana.';
-  }
-  if(l.includes('hewa')){
-    if(l.includes('aina')) return 'Aina za hewa ni: <b>1. Hewa safi</b> - yenye oksijeni nyingi, <b>2. Hewa chafu</b> - yenye moshi na vumbi, <b>3. Hewa baridi</b>, <b>4. Hewa ya moto</b>, <b>5. Hewa yenye unyevu</b>. Tunahitaji hewa safi kila siku.';
-    return 'Hewa ni kile tunachopumua. Hewa safi ina oksijeni ambayo mwili unahitaji. Bila hewa, binadamu hawezi kuishi hata dakika 5.';
-  }
-  if(l.includes('mkojo')){
-    return 'Madhara ya kukaa na mkojo sana: <b>1. Maambukizi ya njia ya mkojo</b>, <b>2. Maumivu ya kibofu</b>, <b>3. Figo kuharibika</b>, <b>4. Mawe kwenye figo</b>. Ushauri: Kama unahisi mkojo, nenda chooni mara moja, usizuie.';
-  }
-  if(l.includes('maisha')) return 'Maisha ni kipindi kiumbe hai anaishi Duniani, kuanzia kuzaliwa hadi kufa. Yanahusisha kukua, kujifunza, kufanya kazi, kupenda, na kuzeeka. Maisha ni zawadi.';
-  if(l.includes('dunia')) return 'Dunia ni sayari tunayoishi, ya tatu kutoka Jua. Ina maji, ardhi na hewa. Ina umri wa bilioni 4.5 na watu zaidi ya bilioni 8.';
-  if(l.includes('jua')) return 'Jua ni nyota katikati ya mfumo wetu. Linatupa mwanga na joto. Bila Jua hakuna uhai.';
-  if(l.includes('mwezi')) return 'Mwezi ni mwezi pekee wa Dunia. Unazunguka Dunia kila siku 27 na unasababisha mawimbi baharini.';
-  if(l.includes('tanzania')) return 'Tanzania ni nchi ya Afrika Mashariki. Mji mkuu Dodoma, mji mkubwa Dar es Salaam. Ina Kilimanjaro, Serengeti, Zanzibar. Lugha ni Kiswahili.';
-  if(l.includes('kilimanjaro')) return 'Kilimanjaro ni mlima mrefu zaidi Afrika, mita 5,895. Uko Tanzania, karibu na Moshi.<br><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Kilimanjaro_2009.jpg/640px-Kilimanjaro_2009.jpg">';
-  if(l.includes('zanzibar')) return 'Zanzibar ni visiwa vya Tanzania. Visiwa vikubwa ni Unguja na Pemba. Inajulikana kwa fukwe nzuri, viungo, na Stone Town.';
-  if(l.includes('pesa') || l.includes('fedha')) return 'Pesa ni kitu tunachotumia kununua bidhaa na huduma. Tanzania tunatumia Shilingi. Kuweka pesa vizuri ni kuweka akiba.';
-  if(l.includes('mapenzi') || l.includes('penzi')) return 'Mapenzi ni hisia ya kumpenda mtu kwa dhati. Mapenzi ya kweli yanahitaji heshima, uaminifu, na mawasiliano mazuri.';
-  if(l.includes('chakula')) return 'Chakula kinatupa nguvu na afya. Chakula bora ni mboga, matunda, samaki, na maji mengi.';
-  if(l.includes('simu')) return 'Simu ni kifaa cha kuwasiliana. Smartphone za sasa zina internet, camera, na AI kama mimi.';
-  if(l.includes('sayari')) return 'Kwenye mfumo wetu kuna sayari 8: Mercury, Venus, Dunia, Mars, Jupiter, Saturn, Uranus, na Neptune.';
-  if(l.includes('mvua')) return 'Mvua inanyesha kwa sababu maji ya bahari yanayeyuka na kuwa mawingu. Mawingu yakijaa, maji yanarudi chini kama mvua.';
-  if(l.includes('shule') || l.includes('soma')) return 'Shule ni mahali pa kujifunza. Kusoma kunakufanya uwe na maarifa na kupata kazi nzuri baadaye.';
-  if(l.includes('mbwa')) return 'Mbwa ni mnyama rafiki wa binadamu. Anasaidia kulinda nyumba na ni mnyama anayependwa sana.';
-  if(l.includes('paka')) return 'Paka ni mnyama mdogo, mpole, anayependwa nyumbani. Anakula samaki na maziwa.';
-  if(l.includes('nyerere')) return 'Mwalimu Julius Nyerere alikuwa Rais wa kwanza wa Tanzania, kutoka 1961 hadi 1985. Anaitwa Baba wa Taifa.';
-  if(l.includes('sauti')) return 'Ndio, nasikiliza sauti yako. Niulize swali lolote - nitakujibu.';
-  if(l.includes('wewe') && l.includes('nani')) return 'Mimi ni AI PRO, msaidizi wako. Niko hapa kukujibu maswali yote, kama Meta AI.';
-
-  // === KAMA NI SWALI LOLOTE JINGINE - ANATENGENEZA JIBU KWA MANTIKI, HASEMI "SIJAIPATA" ===
-  // Hii ndio inamfanya ajibu kila kitu kama mimi
-  let topic = q.replace(/nini|ni nini|maana|kwanini|vipi|eleza|nieleze|niambie|nipe|kuna|ni yapi|ni yap|wapi|nani|zipo|ngapi|hello/gi,'').trim();
-  if(!topic) topic = q;
-  if(l.includes('aina') || l.includes('ngapi') || l.includes('ngap')){
-    return 'Kuhusu aina za ' + topic + ': Kuna aina nyingi sana. Kwa mfano, kama ni miti kuna zaidi ya 60,000 duniani, kama ni hewa kuna hewa safi, chafu, baridi, moto, na yenye unyevu, kama ni wanyama kuna wanyama wa porini na wa nyumbani. Kama unataka aina za ' + topic + ' hasa, niambie ' + topic + ' gani - mfano "aina za miti ya matunda" nitakujibu vizuri zaidi.';
-  }
-  if(l.includes('maana')){
-    return 'Maana ya "' + topic + '" ni hivi: Neno hili linamaanisha kitu / dhana inayohusiana na maisha ya kila siku. Kwa mfano, kama ni "maji" maana yake ni kimiminika tunachokunywa. Kama ni neno lingine, maana yake inapatikana kwa kulitumia kwenye sentensi. Niambie unataka kulitumia wapi ili nikueleze vizuri zaidi.';
-  }
-  // Jibu la jumla - sio "Samahani", ni jibu la kweli lililotengenezwa
-  return 'Nimekuelewa swali lako kuhusu "' + topic + '". Hii ni mada muhimu. Kwa ufupi: ' + topic + ' ni kitu kinachohusiana na maisha ya watu, sayansi, na historia. Kama ni kitu kinachoonekana, kina umbo na matumizi yake. Kama ni dhana, ina maana yake katika jamii. Kama unataka maelezo marefu zaidi kuhusu ' + topic + ', sema "Nieeleze zaidi kuhusu ' + topic + '" na nitakupa maelezo kamili.';
+function getMeaning(q){
+  let l = q.toLowerCase().replace(/nin /g,'nini ').replace(/maan/g,'maana').trim();
+  let word = l.replace(/nini|maana|ya|ni|eleza|nieleze|niambie|nipe|kuna/gi,'').trim();
+  let parts = word.split(/\s+/).filter(w=>w.length>1);
+  let main = parts.length>0 ? parts[parts.length-1] : word;
+  main = main.replace(/[^a-z]/g,'');
+  let dict = {
+    'ardhi':'Ardhi ni uso wa Dunia tunaoishi juu yake. Ni udongo, mchanga na mawe. Tunajenga nyumba na kulima mazao kwenye ardhi.',
+    'mila':'Mila ni desturi na tabia za jamii zilizorithiwa kutoka kwa wazee. Mfano: kuheshimu wazee, harusi, jando na unyago.',
+    'maji':'Maji ni kimiminika muhimu kwa uhai. Tunakunywa, tunapikia, tunaoga. Mwili una maji asilimia 60.',
+    'miti':'Miti ni mimea mikubwa yenye shina na majani. Inatupa hewa safi, matunda na mbao. Aina: miti ya matunda, mbao, kivuli.',
+    'hewa':'Hewa ni kile tunachopumua. Hewa safi ina oksijeni. Bila hewa hatuwezi kuishi.',
+    'maisha':'Maisha ni kipindi kiumbe hai anaishi Duniani, kuanzia kuzaliwa hadi kufa.',
+    'dunia':'Dunia ni sayari tunayoishi, ya tatu kutoka Jua. Ina maji, ardhi na hewa.',
+    'mama':'Mama ni mzazi wa kike aliyetuzaa. Anatupenda na kutulea.',
+    'baba':'Baba ni mzazi wa kiume. Anafanya kazi kutulea familia.',
+  };
+  if(dict[main]) return dict[main];
+  for(let k in dict){ if(main.includes(k) || k.includes(main)) return dict[k]; }
+  if(l.includes('hello') || l.includes('habari')) return 'Habari! Niko vizuri, na wewe?';
+  return 'Umekuwa huna KEY bado. Weka KEY ya bure kutoka aistudio.google.com hapo juu, ndio nitakujibu kila swali kama Meta AI. Bila KEY najua majibu machache tu.';
 }
 </script>
 </body>
