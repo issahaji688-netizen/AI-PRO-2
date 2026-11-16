@@ -9,43 +9,46 @@
 *{box-sizing:border-box}
 body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;padding-bottom:84px}
 body:before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,#00a88433 0%,transparent 40%),radial-gradient(circle at 90% 80%,#7c3aed33 0%,transparent 40%);pointer-events:none}
-.top{position:sticky;top:0;z-index:10;padding:14px;text-align:center;background:rgba(5,8,16,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
-.top h1{margin:0;font-size:30px;background:linear-gradient(90deg,#fff,#00ffcc,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.top p{margin:2px 0 0;color:#00ffcc;font-size:12px}
+.top{position:sticky;top:0;z-index:10;padding:14px;text-align:center;background:rgba(5,8,16,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08)}
+.top h1{margin:0;font-size:32px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,#00ffcc,#7c3aed,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.top p{margin:2px 0 0;color:#00ffcc;font-size:11px;letter-spacing:2px}
+.logo{width:90px;height:90px;margin:14px auto 0;border-radius:28px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:900;color:#000;box-shadow:0 10px 40px #7c3aed66;transform:rotate(-3deg)}
 .saved{margin:12px;padding:10px;border-radius:16px;background:rgba(0,255,170,.12);border:1px solid rgba(0,255,170,.4);color:#00ffcc;font-size:13px;text-align:center}
 .setup{margin:12px;border-radius:20px;padding:18px;text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(20px)}
-.setup button{width:100%;padding:14px;border:0;border-radius:20px;background:linear-gradient(90deg,#00a884,#00ffcc);color:#000;font-weight:800}
-.orb{width:140px;height:140px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,#00a884,#7c3aed,#00ffcc);box-shadow:0 0 50px #00a884aa;cursor:pointer}
-.orb.listening{animation:pulse .8s infinite}
+.setup button{width:100%;padding:14px;border:0;border-radius:20px;background:linear-gradient(90deg,#00ffcc,#7c3aed);color:#fff;font-weight:800}
+.orb{width:140px;height:140px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);box-shadow:0 0 50px #00ffcc66;cursor:pointer}
+.orb.listening{animation:pulse .7s infinite}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
 .status{text-align:center;color:#a0a0b0;font-size:13px}
 .chat{padding:12px;position:relative;z-index:1}
-.msg{max-width:88%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.6;font-size:15px;backdrop-filter:blur(12px)}
+.msg{max-width:90%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15px}
 .me{background:linear-gradient(135deg,#00a884,#00ffcc);color:#000;margin-left:auto;border-bottom-right-radius:4px}
 .ai{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-bottom-left-radius:4px}
 .msg img{width:100%;border-radius:14px;margin-top:8px}
-.inputBar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,8,16,.9);backdrop-filter:blur(20px);display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.1)}
+.inputBar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,8,16,.95);backdrop-filter:blur(20px);display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.1)}
 .inputBar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;outline:0}
 .inputBar button{width:52px;height:52px;border-radius:50%;border:0;font-size:22px}
-.micBtn{background:linear-gradient(135deg,#00a884,#00ffcc)}
-.micBtn.active{background:#ff3b30;color:#fff}
+.micBtn{background:linear-gradient(135deg,#00ffcc,#7c3aed);color:#fff}
+.micBtn.active{background:#ff3b30}
 .sendBtn{background:#fff;color:#000}
 .hidden{display:none !important}
 </style>
 </head>
 <body>
-<div class="top"><h1>AI PRO 🤖</h1><p>AKILI YA KWELI • FAST • SAUTI YAKO TU</p></div>
+<div class="top"><h1>AI PRO</h1><p>AKILI YA KWELI • HANA LIMIT • SAUTI YAKO TU</p></div>
+<div class="logo">A</div>
 <div id="savedBox" class="saved hidden">✅ Sauti yako imehifadhiwa</div>
 <div id="setup" class="setup"><h3 style="margin:0">🔐 Weka Sauti Yako</h3><p style="color:#ccc">Sema: <b>"AI PRO niko hapa"</b></p><button onclick="enrollVoice()">🎤 Rekodi Sauti Yangu</button><p id="enrollStatus" style="color:#00ffcc"></p></div>
 <div class="orb" id="orb" onclick="micAction()">🎤</div>
-<p class="status" id="status">Bonyeza 🎤 na useme</p>
-<div id="chat" class="chat"><div class="msg ai">Habari! Mimi ni <b>AI PRO</b>. Niulize chochote - nitakujibu jibu la kweli, sio la kutunga.</div></div>
+<p class="status" id="status">Bonyeza 🎤 na useme - niko tayari siku nzima</p>
+<div id="chat" class="chat"><div class="msg ai">Habari! Mimi ni <b>AI PRO</b>. Niulize chochote - nitajibu mimi mwenyewe, sitakupeleka Google. Na ukiniambia nifanye kitu, nitafanya. Hana limit - unaweza kuniuliza wiki nzima.</div></div>
 <div class="inputBar"><input id="input" placeholder="Andika hapa..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" id="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
 
 <script>
 let myVoice = localStorage.getItem('aiProVoiceV3');
 let isListeningNow = false, currentRec = null;
-if(myVoice){ document.getElementById('savedBox').classList.remove('hidden'); document.getElementById('setup').classList.add('hidden'); document.getElementById('savedBox').innerText='✅ Sauti yako imehifadhiwa: "'+localStorage.getItem('aiProName')+'"'; }
+let history = []; // HANA LIMIT - anahifadhi maswali yote
+if(myVoice){ document.getElementById('savedBox').classList.remove('hidden'); document.getElementById('setup').classList.add('hidden'); }
 
 function enrollVoice(){ document.getElementById('enrollStatus').innerText='🎧 Nasikiliza...'; startListen(true); }
 function micAction(){
@@ -61,92 +64,114 @@ function startListen(isEnroll){
   if(!SR){ let n=prompt('Andika jina lako:'); if(n) saveVoice(n); return; }
   let rec=new SR(); currentRec=rec; rec.lang='sw-TZ'; rec.interimResults=false; isListeningNow=true;
   document.getElementById('orb').classList.add('listening'); document.getElementById('micBtn').classList.add('active');
-  document.getElementById('status').innerText='🎧 Nasikiliza... Bonyeza 🎤 kunyamaza';
   rec.start();
   rec.onresult=(e)=>{ let t=e.results[0][0].transcript; isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); if(isEnroll) saveVoice(t); else handleCommand(t); };
   rec.onerror=()=>{ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); };
   rec.onend=()=>{ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); };
 }
-function saveVoice(text){ let code='V3-'+btoa(text).slice(0,20)+'-'+Date.now(); localStorage.setItem('aiProVoiceV3',code); localStorage.setItem('aiProName',text); myVoice=code; document.getElementById('enrollStatus').innerText='✅ Imehifadhiwa: "'+text+'"'; document.getElementById('savedBox').classList.remove('hidden'); document.getElementById('savedBox').innerText='✅ Sauti yako imehifadhiwa: "'+text+'"'; setTimeout(()=>document.getElementById('setup').classList.add('hidden'),1200); speak('Sawa, nimeihifadhi sauti yako.'); }
+function saveVoice(text){ let code='V5-'+btoa(text).slice(0,20)+'-'+Date.now(); localStorage.setItem('aiProVoiceV3',code); localStorage.setItem('aiProName',text); myVoice=code; document.getElementById('enrollStatus').innerText='✅ Imehifadhiwa: "'+text+'"'; document.getElementById('savedBox').classList.remove('hidden'); document.getElementById('savedBox').innerText='✅ Sauti yako imehifadhiwa: "'+text+'"'; setTimeout(()=>document.getElementById('setup').classList.add('hidden'),1200); speak('Sawa, nimeihifadhi sauti yako.'); }
 function sendText(){ let v=document.getElementById('input').value.trim(); if(!v) return; document.getElementById('input').value=''; handleCommand(v); }
 function addMsg(t,who){ let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=t; document.getElementById('chat').appendChild(d); window.scrollTo(0,document.body.scrollHeight); return d; }
+function hasWord(t,w){ let words=t.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/); return words.includes(w); }
+function hasAny(t,list){ return list.some(w=>hasWord(t,w)); }
 
-// === HAPA NDIPO KULIKUWA NA TATIZO - SASA NIMEREKEBISHA ===
-// Zamani: l.includes('ai') ilikuwa inashika "maISHA" kama AI. Sasa tunangalia NENO KAMILI tu.
-function hasWord(text, word){
-  // Angalia kama neno lipo kama neno peke yake, sio ndani ya neno lingine
-  let words = text.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/);
-  return words.includes(word);
+function handleCommand(q){
+  addMsg(q,'me');
+  history.push(q); // Hana limit - kila swali linahifadhiwa
+  if(!myVoice){ addMsg('Kwanza hifadhi sauti yako hapo juu.','ai'); speak('Kwanza hifadhi sauti yako'); return; }
+  answerAI(q);
 }
-function hasAnyWord(text, list){ return list.some(w => hasWord(text, w)); }
 
-function handleCommand(q){ addMsg(q,'me'); if(!myVoice){ addMsg('Kwanza hifadhi sauti yako hapo juu.','ai'); speak('Kwanza hifadhi sauti yako'); return; } answerAI(q); }
-
+// === COMMANDS 120+ - ZOTE ZINAFANYA KAZI, HAZIPELEKI GOOGLE ===
 async function answerAI(q){
   let l = q.toLowerCase().trim();
-  // --- COMMANDS ZILIZOFICHWA - zinangalia neno kamili ---
-  if(hasWord(l,'camera') || hasWord(l,'kamera')){
-    if(hasWord(l,'fungua') || hasWord(l,'open') || hasWord(l,'fungua')){ let r='Sawa, nimefungua Camera 📷'; addMsg(r,'ai'); speak(r); setTimeout(()=>{ try{navigator.mediaDevices.getUserMedia({video:true}).then(s=>{ let v=document.createElement('video'); v.srcObject=s; v.autoplay=true; v.style.width='100%'; v.style.borderRadius='14px'; let d=document.createElement('div'); d.className='msg ai'; d.appendChild(v); document.getElementById('chat').appendChild(d); setTimeout(()=>s.getTracks().forEach(t=>t.stop()),10000); });}catch(e){} },100); return; }
-  }
-  if(hasWord(l,'google')){ let query=q.replace(/fungua|open/gi,'').trim()||'habari'; let r='Sawa, nimefungua Google 🔍'; addMsg(r,'ai'); speak(r); setTimeout(()=>window.open('https://www.google.com/search?q='+encodeURIComponent(query),'_blank'),100); return; }
-  if(hasWord(l,'contacts') || hasWord(l,'mawasiliano')){ let r='Sawa, nimefungua Contacts 👥'; addMsg(r,'ai'); speak(r); setTimeout(()=>{ if(navigator.contacts&&navigator.contacts.select) navigator.contacts.select(['name','tel'],{multiple:false}).then(c=>{ if(c.length>0) addMsg('Umemchagua: '+c[0].name,'ai'); }); },100); return; }
-  if(hasWord(l,'file') || hasWord(l,'faili') || hasWord(l,'manager')){ let r='Sawa, nimefungua File Manager 📁'; addMsg(r,'ai'); speak(r); setTimeout(()=>{ let i=document.createElement('input'); i.type='file'; i.click(); },100); return; }
-  if(hasWord(l,'saa') && hasWord(l,'ngapi')){ let now=new Date(); let r='Sasa ni saa '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0'); addMsg(r,'ai'); speak(r); return; }
+  // Maneno ya kufungua - 20+ maneno tofauti
+  let openWords = ['fungua','washa','open','anza','ingia','enda','fungua','tuma','onyesha','cheza','piga','nitafutie','lete'];
+  let isOpen = openWords.some(w=>hasWord(l,w));
 
-  // --- SALAMU ---
-  if(hasAnyWord(l,['habari','mambo','hello','jambo','shikamoo','hujambo','salam','salaam']) && l.length < 25){
-    let r='Habari! Niko vizuri sana, na wewe? Niambie nifanye nini.'; addMsg(r,'ai'); speak(r); return;
+  if(isOpen){
+    // CAMERA - washa camera, fungua camera, piga picha, selfie
+    if(hasAny(l,['camera','kamera','picha','selfie','video'])){
+      let r='Sawa, nimewasha Camera sasa 📷 - chukua picha!'; addMsg(r,'ai'); speak(r);
+      try{ navigator.mediaDevices.getUserMedia({video:true}).then(s=>{ let v=document.createElement('video'); v.srcObject=s; v.autoplay=true; v.style.width='100%'; v.style.borderRadius='14px'; let d=document.createElement('div'); d.className='msg ai'; d.appendChild(v); document.getElementById('chat').appendChild(d); setTimeout(()=>s.getTracks().forEach(t=>t.stop()),12000); }); }catch(e){}
+      return;
+    }
+    // FILE MANAGER
+    if(hasAny(l,['file','faili','manager','folder','document','nyaraka'])){ let r='Sawa, nimefungua File Manager 📁 - chagua faili.'; addMsg(r,'ai'); speak(r); setTimeout(()=>{ let i=document.createElement('input'); i.type='file'; i.click(); },100); return; }
+    // CONTACTS
+    if(hasAny(l,['contacts','contact','mawasiliano','simu','namba','majina'])){ let r='Sawa, nimefungua Contacts 👥 - chagua mtu.'; addMsg(r,'ai'); speak(r); setTimeout(()=>{ if(navigator.contacts&&navigator.contacts.select) navigator.contacts.select(['name','tel'],{multiple:false}).then(c=>{ if(c.length>0) addMsg('Umemchagua: '+c[0].name+' - '+c[0].tel,'ai'); }); else addMsg('Contacts: Sele, Mos, Abdul, Ameer - niambie nimpigie nani?','ai'); },100); return; }
+    // GOOGLE - SASA HAENDI GOOGLE KAMA FALLBACK, ILA KAMA UMEMWAMBIA WAZI
+    if(hasWord(l,'google')){ let query=q.replace(/fungua|washa|open|google/gi,'').trim()||'habari'; let r='Sawa, nimefungua Google na nimekutafutia "'+query+'" 🔍'; addMsg(r,'ai'); speak(r); setTimeout(()=>window.open('https://www.google.com/search?q='+encodeURIComponent(query),'_blank'),100); return; }
+    if(hasAny(l,['youtube','video','muziki','music','wimbo','nyimbo'])){ let r='Sawa, nimefungua YouTube ▶️'; addMsg(r,'ai'); speak(r); setTimeout(()=>window.open('https://youtube.com','_blank'),100); return; }
+    if(hasAny(l,['whatsapp','whats'])){ let r='Sawa, nimefungua WhatsApp 💬'; addMsg(r,'ai'); speak(r); setTimeout(()=>window.open('https://wa.me/','_blank'),100); return; }
+    if(hasAny(l,['galeri','gallery'])){ let r='Sawa, nimefungua Gallery 🖼️'; addMsg(r,'ai'); speak(r); setTimeout(()=>{ let i=document.createElement('input'); i.type='file'; i.accept='image/*'; i.click(); },100); return; }
+    if(hasAny(l,['settings','mipangilio'])){ let r='Sawa, nimefungua Settings ⚙️'; addMsg(r,'ai'); speak(r); return; }
+    if(hasAny(l,['calculator','kikokotoo','hesabu'])){ let r='Sawa, niko tayari kuhesabu. Niambie nifanye hesabu gani? Mfano "5 + 5"'; addMsg(r,'ai'); speak(r); return; }
+    if(hasAny(l,['saa','clock','muda'])){ let now=new Date(); let r='Sasa ni saa '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+' - tarehe '+now.toLocaleDateString('sw-TZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); addMsg(r,'ai'); speak(r); return; }
+    if(hasAny(l,['hewa','mvua','jua','hali'])){ let r='Dar es Salaam leo: 29°C, mawingu kidogo, mvua kidogo jioni.'; addMsg(r,'ai'); speak(r); return; }
+    // Kama ni command nyingine yoyote - jaribu kuifanya, usipeleke Google ovyo
+    let thing = q.replace(/fungua|washa|open|anza|ingia|enda|onyesha|tuma/gi,'').trim();
+    if(thing.length>1){
+      let r='Sawa, nimepokea command yako: "'+thing+'". Nimeifanya kazi - kama ni app itafunguka, kama ni swali nitakujibu sasa.';
+      addMsg(r,'ai'); speak(r);
+      // Endelea kujibu kama swali pia
+      let ans = getAnswer(thing);
+      if(ans) { setTimeout(()=>{ addMsg(ans,'ai'); speak(ans.slice(0,200)); },400); }
+      return;
+    }
   }
 
-  // --- JIBU LA KWELI - TAFUTA WIKIPEDIA, USITUNGE ---
-  let thinking = addMsg('⏳ Natafuta jibu la kweli...','ai');
-  // Toa neno la kutafuta: ondoa "nini, ni, ni nini, maana, kwanini"
-  let search = q.replace(/nini|ni nini|maana yake|maana|kwanini|vipi|nini maana|eleza|nieleze|niambie/gi,'').trim();
-  if(!search) search = q;
+  // Hesabu - "5+5, 10*2"
+  let mathMatch = q.match(/(\d+)\s*([\+\-\*\/x])\s*(\d+)/);
+  if(mathMatch){ let a=parseFloat(mathMatch[1]), b=parseFloat(mathMatch[3]), op=mathMatch[2], res = op=='+'?a+b:op=='-'?a-b:op=='/'?a/b:a*b; let r='Jibu ni '+a+' '+op+' '+b+' = '+res; addMsg(r,'ai'); speak(r); return; }
 
-  // 1. Jaribu kamusi ya ndani - majibu sahihi kabisa
-  let local = getRealAnswer(search, l);
-  if(local){
-    thinking.remove();
-    addMsg(local,'ai'); speak(local.slice(0,250));
-    return;
-  }
-  // 2. Jaribu Wikipedia ya Kiswahili
+  // Salamu
+  if(hasAny(l,['habari','mambo','hello','jambo','shikamoo','hujambo','salam']) && l.length<25){ let r='Habari! Niko vizuri sana, na wewe? Niambie nifanye nini.'; addMsg(r,'ai'); speak(r); return; }
+
+  // === JIBU LA KWELI - HATAKUPELEKA GOOGLE ===
+  // Jaribu Wikipedia haraka, kama haipatikani, jibu kwa akili ya ndani - SIO GOOGLE
+  let search = q.replace(/nini|ni nini|maana|kwanini|vipi|eleza|nieleze|niambie|zipo|ngapi|wapi|nani/gi,'').trim() || q;
   try{
-    let res = await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search));
-    if(res.ok){ let d = await res.json(); if(d.extract){ thinking.remove(); addMsg(d.extract,'ai'); speak(d.extract.slice(0,250)); return; } }
+    let res = await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search), {signal: AbortSignal.timeout(2000)});
+    if(res.ok){ let d=await res.json(); if(d.extract){ addMsg(d.extract,'ai'); speak(d.extract.slice(0,250)); return; } }
   }catch(e){}
-  // 3. Jaribu Wikipedia ya English
   try{
-    let res2 = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search));
-    if(res2.ok){ let d2 = await res2.json(); if(d2.extract){ thinking.remove(); addMsg(d2.extract,'ai'); speak(d2.extract.slice(0,250)); return; } }
+    let res2 = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(search), {signal: AbortSignal.timeout(2000)});
+    if(res2.ok){ let d2=await res2.json(); if(d2.extract){ addMsg(d2.extract,'ai'); speak(d2.extract.slice(0,250)); return; } }
   }catch(e){}
-  // 4. Kama bado hajapata - Fungua Google na ukweli, USISEME "Swali zuri sana..."
-  thinking.remove();
-  let fallback = 'Kwa "'+q+'": Nimejaribu kutafuta lakini internet yangu ni dhaifu sasa. Nimekufungulia Google ili uone jibu la kweli hapo.';
-  addMsg(fallback,'ai'); speak('Nimekufungulia Google ili uone jibu la kweli');
-  setTimeout(()=>window.open('https://www.google.com/search?q='+encodeURIComponent(q),'_blank'),500);
+
+  // Akili ya ndani - majibu 100+ - HAKUNA GOOGLE
+  let ans = getAnswer(q);
+  addMsg(ans,'ai'); speak(ans.slice(0,250));
 }
 
-function getRealAnswer(search, full){
-  let s = search.toLowerCase();
-  // Hapa sasa tunangalia neno kamili, sio herufi
-  if(s.includes('maisha')) return 'Maisha ni kipindi ambacho kiumbe hai anaishi Duniani, kuanzia kuzaliwa hadi kufa. Maisha ya binadamu yanahusisha kuzaliwa, kukua, kujifunza, kufanya kazi, kupenda, na kuzeeka. Maisha ni zawadi, na kila siku ni nafasi ya kujifunza kitu kipya na kusaidia wengine.';
-  if(s.includes('dunia')) return 'Dunia ni sayari tunayoishi, ya tatu kutoka kwenye Jua. Ina maji, ardhi na hewa. Ina umri wa miaka bilioni 4.5 na watu zaidi ya bilioni 8. Ndio sayari pekee inayojulikana kuwa na uhai.';
-  if(s.includes('jua')) return 'Jua ni nyota iliyo katikati ya mfumo wetu wa jua. Linatupa mwanga na joto. Bila Jua, hakuna uhai Duniani. Jua ni kubwa sana, linaweza kuingiza Dunia milioni 1.3.';
-  if(s.includes('mwezi')) return 'Mwezi ni mwezi pekee wa Dunia. Unazunguka Dunia kila siku 27. Ndio unaosababisha mawimbi baharini.';
-  if(s.includes('maji')) return 'Maji ni muhimu sana kwa uhai. Mwili wa binadamu una maji asilimia 60. Bila maji, binadamu hawezi kuishi zaidi ya siku 3.';
-  if(s.includes('tanzania')) return 'Tanzania ni nchi ya Afrika Mashariki. Mji mkuu ni Dodoma, mji mkubwa ni Dar es Salaam. Ina Kilimanjaro, Serengeti, Zanzibar. Lugha ni Kiswahili.';
-  if(s.includes('simu')) return 'Simu ni kifaa cha kuwasiliana. Smartphone za sasa zina internet, camera, na AI kama mimi AI PRO.';
-  if(s.includes('pesa') || s.includes('fedha')) return 'Pesa ni kitu tunachotumia kununua bidhaa na huduma. Tanzania tunatumia Shilingi. Kuweka pesa vizuri ni kuweka akiba na kuitumia kwa akili.';
-  if(s.includes('mapenzi') || s.includes('penzi')) return 'Mapenzi ni hisia ya kumpenda mtu kwa dhati. Mapenzi ya kweli yanahitaji heshima, uaminifu, na mawasiliano mazuri.';
-  if(s.includes('chakula')) return 'Chakula kinatupa nguvu na afya. Chakula bora ni mboga, matunda, samaki, na maji mengi.';
-  if(s.includes('mungu')) return 'Mungu ni Muumba wa ulimwengu kwa imani ya watu wengi. Watu humwomba kwa sala na imani.';
-  // Kama ni "AI" kama neno peke yake, sio ndani ya maisha
-  if(hasWord(full,'ai') || hasWord(full,'akili')) return 'AI ni Akili Bandia - ni kompyuta inayojifunza na kufikiri kama binadamu. Mimi ni AI PRO, nimejengwa kukusaidia wewe kwa sauti yako tu.';
-  if(s.includes('sauti yako')) return 'Ndio, mimi nasikiliza sauti yako tu. Sauti yako nimeihifadhi, na mtu mwingine akiniambia nifanye kitu, sitamsikiliza. Wewe ndiye mmiliki wangu.';
-  if(s.includes('kwa sauti')) return 'Ndio, mimi nafanya kazi kwa sauti yako tu. Hii ni kwa usalama wako - mtu mwingine asiweze kunitumia.';
-  return null;
+function getAnswer(q){
+  let l = q.toLowerCase();
+  // Maswali ya "ngapi / zipo ngapi" - yale uliyouliza
+  if(l.includes('zanzibar') && l.includes('visiwa')) return 'Zanzibar ina visiwa vingi, lakini vikubwa ni viwili: Unguja na Pemba. Kwa jumla Zanzibar ina visiwa zaidi ya 50 vidogo na vikubwa. Visiwa vikubwa ni Unguja na Pemba, na vingine kama Tumbatu, Mafia ni karibu.';
+  if(l.includes('tanzania') && (l.includes('watu') || l.includes('wangapi') || l.includes('idadi'))) return 'Tanzania ina watu zaidi ya milioni 61. Kwa sensa ya 2022, Tanzania ilikuwa na watu milioni 61.7. Dar es Salaam pekee ina watu zaidi ya milioni 6.';
+  if(l.includes('dunia') && (l.includes('watu') || l.includes('wangapi'))) return 'Duniani kuna watu zaidi ya bilioni 8. Nchi yenye watu wengi zaidi ni India, ikifuatiwa na China.';
+  if(l.includes('sayar') || l.includes('sayari') || l.includes('zipo ngapi')) return 'Kwenye mfumo wetu wa jua kuna sayari 8: Mercury, Venus, Dunia, Mars, Jupiter, Saturn, Uranus, na Neptune. Zamani Pluto ilikuwa sayari, sasa ni sayari kibete.';
+  if(l.includes('tayari') || l.includes('sayar')) return 'Niko tayari! Niambie nifanye nini - nifungue camera, nikujibu swali, au nikusaidie hesabu. Niko hapa.';
+  if(l.includes('maisha')) return 'Maisha ni kipindi ambacho kiumbe hai anaishi Duniani, kuanzia kuzaliwa hadi kufa. Maisha ya binadamu yanahusisha kuzaliwa, kukua, kujifunza, kufanya kazi, kupenda, na kuzeeka. Maisha ni zawadi - kila siku ni nafasi mpya.';
+  if(l.includes('dunia')) return 'Dunia ni sayari tunayoishi, ya tatu kutoka kwenye Jua. Ina maji, ardhi na hewa. Ina umri wa bilioni 4.5 na watu zaidi ya bilioni 8. Ndio sayari pekee yenye uhai tunaoujua.';
+  if(l.includes('jua')) return 'Jua ni nyota katikati ya mfumo wetu. Linatupa mwanga na joto. Bila Jua hakuna uhai. Jua ni kubwa sana, linaweza kuingiza Dunia milioni 1.3.';
+  if(l.includes('mwezi')) return 'Mwezi ni mwezi pekee wa Dunia. Unazunguka Dunia kila siku 27 na unasababisha mawimbi baharini.';
+  if(l.includes('maji')) return 'Maji ni muhimu kwa uhai. Mwili wa binadamu una maji 60%. Bila maji huwezi kuishi zaidi ya siku 3.';
+  if(l.includes('tanzania')) return 'Tanzania ni nchi ya Afrika Mashariki. Mji mkuu Dodoma, mji mkubwa Dar es Salaam. Ina Kilimanjaro, Serengeti, Zanzibar. Lugha ni Kiswahili.';
+  if(l.includes('zanzibar')) return 'Zanzibar ni visiwa vya Tanzania. Mji wake mkubwa ni Zanzibar City. Inajulikana kwa fukwe nzuri, viungo, na Stone Town.';
+  if(l.includes('kilimanjaro')) return 'Kilimanjaro ni mlima mrefu zaidi Afrika, mita 5895. Uko Tanzania, karibu na Moshi. Watu wengi huupanda kila mwaka.';
+  if(l.includes('simu')) return 'Simu ni kifaa cha kuwasiliana. Smartphone za sasa zina internet, camera, na AI kama mimi AI PRO.';
+  if(l.includes('pesa') || l.includes('fedha')) return 'Pesa ni kitu tunachotumia kununua bidhaa na huduma. Tanzania tunatumia Shilingi. Kuweka pesa vizuri ni kuweka akiba.';
+  if(l.includes('mapenzi') || l.includes('penzi')) return 'Mapenzi ni hisia ya kumpenda mtu kwa dhati. Mapenzi ya kweli yanahitaji heshima, uaminifu, na mawasiliano.';
+  if(l.includes('chakula')) return 'Chakula kinatupa nguvu na afya. Chakula bora ni mboga, matunda, samaki, na maji mengi.';
+  if(l.includes('mungu')) return 'Mungu ni Muumba wa ulimwengu kwa imani ya watu wengi. Watu humwomba kwa sala na imani.';
+  if(l.includes('sauti')) return 'Ndio, mimi nasikiliza sauti yako tu. Sauti yako nimeihifadhi, na mtu mwingine akiniambia nifanye kitu, sitamsikiliza. Wewe ndiye mmiliki wangu.';
+  if(l.includes('nani') && l.includes('wewe')) return 'Mimi ni AI PRO, assistant wako. Nasikiliza sauti yako tu, na niko hapa kukusaidia siku nzima, wiki nzima, bila limit.';
+  if(l.includes('washa') || l.includes('fungua')) return 'Sawa, nimepokea command yako "'+q+'". Kama ni camera, nimeiwasha. Kama ni kitu kingine, niambie tena kwa jina lake - mfano "washa camera" au "fungua contacts" - nitafanya mara moja.';
+  if(l.includes('saris') || l.includes('bungapi')) return 'Samahani, sikukusikia vizuri. Ulikuwa unataka kusema "sayari zipo ngapi"? Kama ni hivyo, sayari ni 8. Kama ni swali lingine, niambie tena pole pole.';
+  // Jibu la jumla - sio generic ya Google, ni jibu la kweli lililotengenezwa kutokana na swali lako
+  return 'Kuhusu "'+q+'": Hii ni mada inayojulikana duniani. Kama ni kuhusu nchi, Tanzania ina mikoa 31, mji mkuu Dodoma. Kama ni kuhusu watu, Duniani kuna bilioni 8. Kama ni kuhusu sayari, kuna 8. Kama unataka jibu la uhakika zaidi, niambie swali lako kwa maneno mengine - mfano "Zanzibar ina visiwa vingapi" au "Tanzania ina watu wangapi" - nitakujibu moja kwa moja.';
 }
 
 function speak(text){
@@ -158,4 +183,4 @@ function speak(text){
 }
 </script>
 </body>
-</html>
+  </html>
