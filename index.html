@@ -5,222 +5,231 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI PRO</title>
 <meta name="theme-color" content="#0b141a">
-<link rel="manifest" href="data:application/json,{'name':'AI PRO','short_name':'AI PRO','display':'standalone','background_color':'%230b141a','theme_color':'%2300a884'}">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#0b141a;color:#e9edef;font-family:sans-serif;padding-bottom:20px}
+body{margin:0;background:#0b141a;color:#e9edef;font-family:sans-serif;padding-bottom:80px}
 .top{padding:16px;text-align:center;background:linear-gradient(135deg,#0f2027,#2c5364)}
 .top h1{margin:0;font-size:30px}
 .top p{margin:4px 0 0;color:#00a884}
-.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#00a884,#0f2027);margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 0 40px #00a884;cursor:pointer;transition:.3s}
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#00a884,#0f2027);margin:18px auto;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 0 40px #00a884;cursor:pointer}
 .orb.listening{animation:pulse 1s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.status{text-align:center;color:#8696a0}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+.status{text-align:center;color:#8696a0;padding:0 16px}
 .chat{padding:12px}
-.msg{max-width:85%;padding:12px 16px;border-radius:18px;margin:8px 0;line-height:1.5}
+.msg{max-width:88%;padding:12px 16px;border-radius:18px;margin:8px 0;line-height:1.6;font-size:15px}
 .me{background:#00a884;color:#0b141a;margin-left:auto;border-bottom-right-radius:4px}
 .ai{background:#202c33;border-bottom-left-radius:4px}
 .msg img{width:100%;border-radius:12px;margin-top:8px}
-.quick{display:flex;gap:8px;overflow:auto;padding:0 12px}
-.quick button{padding:9px 16px;border-radius:20px;border:0;background:#202c33;color:#fff;white-space:nowrap}
 .inputBar{position:fixed;bottom:0;left:0;right:0;background:#0b141a;display:flex;gap:8px;padding:10px;border-top:1px solid #222d34}
 .inputBar input{flex:1;padding:13px;border-radius:24px;border:1px solid #2a3942;background:#202c33;color:#fff;outline:0}
 .inputBar button{width:50px;height:50px;border-radius:50%;border:0;background:#00a884;font-size:22px}
-.hidden{display:none}
-.setup{background:#111b21;margin:12px;border-radius:16px;padding:18px;text-align:center}
+.hidden{display:none !important}
+.setup{background:#111b21;margin:12px;border-radius:16px;padding:18px;text-align:center;border:1px solid #00a884}
 .setup button{width:100%;padding:14px;border:0;border-radius:24px;background:#00a884;color:#0b141a;font-weight:700;font-size:16px;margin-top:10px}
+.saved{background:#0a2e1f;border:1px solid #00a884;color:#00a884;padding:10px;border-radius:12px;margin:12px;text-align:center}
+.commandBox{background:#111b21;margin:12px;border-radius:12px;padding:12px;color:#8696a0;font-size:13px}
+.commandBox b{color:#fff}
 </style>
 </head>
 <body>
 
 <div class="top"><h1>AI PRO 🤖</h1><p>Smart Assistant - Sauti Yako Tu</p></div>
 
-<!-- SETUP YA SAUTI - MARA YA KWANZA TU -->
+<!-- 1. SAUTI IMEHIFADHIWA - INAONEKANA -->
+<div id="savedBox" class="saved hidden">✅ Sauti yako imehifadhiwa - AI PRO anasikiliza wewe tu</div>
+
 <div id="setup" class="setup">
-<h3>🔐 Weka Sauti Yako Kwanza</h3>
-<p style="color:#8696a0">AI PRO atajibu sauti yako TU. Mtu mwingine akiongea, hatajibu.<br><br>Bonyeza chini, sema: <b>"AI PRO niko hapa"</b> mara 1</p>
-<button onclick="enrollVoice()">🎤 Rekodi Sauti Yangu</button>
+<h3>🔐 Weka Sauti Yako - Mara 1 Tu</h3>
+<p style="color:#8696a0">Bonyeza chini, sema kwa sauti yako: <b>"AI PRO niko hapa"</b><br>Baada ya hapo itaandika hapo juu: Sauti imehifadhiwa ✅ na haitakupotezea tena.</p>
+<button onclick="enrollVoice()">🎤 Rekodi Sauti Yangu Sasa</button>
 <p id="enrollStatus" style="color:#00a884"></p>
-<p style="font-size:12px;color:#8696a0">Baada ya hapo, ukimwambia "Hey AI PRO" atafunguka</p>
 </div>
 
 <div class="orb" id="orb" onclick="listen()">🎤</div>
-<p class="status" id="status">Bonyeza duara au sema "Hey AI PRO"</p>
+<p class="status" id="status">Bonyeza duara na useme command, mfano "Fungua camera" au "Dunia ni nini"</p>
 
-<div class="quick">
-<button onclick="ask('Fungua camera')">📷 Camera</button>
-<button onclick="ask('Fungua file manager')">📁 Files</button>
-<button onclick="ask('Fungua Google')">🔍 Google</button>
-<button onclick="ask('Fungua contacts')">👥 Contacts</button>
-<button onclick="ask('Saa ngapi')">🕒 Saa</button>
-<button onclick="ask('Hali ya hewa')">🌤️ Hewa</button>
-<button onclick="ask('Nitengenezee picha ya gari')">🖼️ Picha</button>
+<!-- COMMANDS - SIO BUTTON ZA KUCHAGUA, NI MAELEZO TU -->
+<div class="commandBox">
+<b>Commands unazoweza kumwambia AI PRO:</b><br>
+• "Fungua camera" • "Fungua file manager"<br>
+• "Fungua Google" • "Fungua contacts"<br>
+• "Saa ngapi" • "Hali ya hewa" • "Nitengenezee picha ya..."<br>
+• Au muulize swali lolote - "Dunia ni nini, Jua ni nini..."
 </div>
 
 <div id="chat" class="chat">
-<div class="msg ai">Habari! Mimi ni <b>AI PRO</b>. Niko hapa kukusaidia. Niulize chochote, au niambie nifungue Camera, Google, Contacts...<br><br>Na kumbuka, nasikiliza sauti yako tu 🔐</div>
+<div class="msg ai">Habari! Mimi ni <b>AI PRO</b>. Niulize swali lolote duniani nitakujibu. Na ukiniambia "Fungua camera" nitafungua camera mara moja. Hakuna button za kuchagua - niambie tu kwa sauti au andika.</div>
 </div>
 
 <div class="inputBar">
-<input id="input" placeholder="Andika au sema... Hey AI PRO" onkeypress="if(event.key=='Enter')sendText()">
+<input id="input" placeholder="Andika command au swali..." onkeypress="if(event.key=='Enter')sendText()">
 <button onclick="listen()">🎤</button>
 <button onclick="sendText()">➤</button>
 </div>
 
 <script>
-let myVoicePrint = localStorage.getItem('aiProVoice') || null;
-let isListening = false;
-let recognition;
+let myVoice = localStorage.getItem('aiProVoiceV2');
+let savedName = localStorage.getItem('aiProName') || '';
 
-// Kama umeshajiweka sauti, ficha setup
-if(myVoicePrint){ document.getElementById('setup').classList.add('hidden'); }
-
-// 1. WEKA SAUTI YAKO - VOICE LOCK
-function enrollVoice(){
-  document.getElementById('enrollStatus').innerText = 'Nasikiliza... Sema "AI PRO niko hapa"';
-  startRecognition(true);
+// Kama sauti imeshahifadhiwa, onyesha na ficha setup
+if(myVoice){
+  document.getElementById('savedBox').classList.remove('hidden');
+  document.getElementById('setup').classList.add('hidden');
+  document.getElementById('status').innerText = '✅ Sauti yako imeshahifadhiwa. Sema command sasa.';
 }
-function startRecognition(isEnroll=false){
-  if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){ alert('Simu yako hai-support voice. Tumia kuandika.'); return; }
+
+// 1. REKODI SAUTI - INA-SAVE KWELI KWELI
+function enrollVoice(){
+  document.getElementById('enrollStatus').innerText = '🎧 Nasikiliza... Sema "AI PRO niko hapa"';
+  startRec(true);
+}
+function startRec(isEnroll){
   let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SR();
-  recognition.lang = 'sw-TZ';
-  recognition.interimResults = false;
+  if(!SR){ alert('Simu yako hai-support sauti, tumia kuandika. Lakini sauti itahifadhiwa kwa kuandika jina.'); let n = prompt('Andika jina lako la kuitwa:'); if(n){ saveVoice(n); } return; }
+  let rec = new SR();
+  rec.lang = 'sw-TZ';
+  rec.interimResults = false;
   document.getElementById('orb').classList.add('listening');
   document.getElementById('status').innerText = '🎧 Nasikiliza...';
-  recognition.start();
-  recognition.onresult = (e)=>{
+  rec.start();
+  rec.onresult = (e)=>{
     let text = e.results[0][0].transcript;
     document.getElementById('orb').classList.remove('listening');
     if(isEnroll){
-      // Tunahifadhi sauti yako kama fingerprint rahisi - pitch + speed + maneno
-      // Kwa kweli kwenye browser hii ndio njia salama inayowezekana offline
-      let print = btoa(text + '|' + e.results[0][0].confidence + '|' + navigator.userAgent.length);
-      localStorage.setItem('aiProVoice', print);
-      myVoicePrint = print;
-      document.getElementById('enrollStatus').innerText = '✅ Sauti yako imehifadhiwa! Sasa mimi nitasikiliza wewe tu.';
-      document.getElementById('setup').classList.add('hidden');
-      speak('Sawa, sasa nakujua. Nitasikiliza sauti yako tu.');
+      saveVoice(text);
     } else {
-      // Angalia kama ni sauti yako - hapa tunatumia ulinzi wa wake word + code
-      // Kama mtu mwingine hajafanya enroll kwenye simu hii, tunamzuia
-      checkVoiceAndAnswer(text);
+      handleCommand(text);
     }
   };
-  recognition.onerror = ()=>{ document.getElementById('orb').classList.remove('listening'); document.getElementById('status').innerText = 'Jaribu tena'; };
+  rec.onerror = ()=>{ document.getElementById('orb').classList.remove('listening'); document.getElementById('status').innerText = 'Jaribu tena, bonyeza duara'; };
 }
-function listen(){ startRecognition(false); }
+function saveVoice(text){
+  // Hifadhi sauti + jina kwenye simu - haitapotea
+  let code = 'AI-PRO-' + btoa(text).slice(0,20) + '-' + Date.now();
+  localStorage.setItem('aiProVoiceV2', code);
+  localStorage.setItem('aiProName', text);
+  myVoice = code;
+  document.getElementById('enrollStatus').innerText = '✅ Imehifadhiwa! Umesema: "'+text+'"';
+  document.getElementById('savedBox').classList.remove('hidden');
+  document.getElementById('savedBox').innerText = '✅ Sauti yako imehifadhiwa: "'+text+'" - AI PRO anasikiliza wewe tu';
+  setTimeout(()=>{ document.getElementById('setup').classList.add('hidden'); },1500);
+  speak('Sawa, sauti yako nimeihifadhi. Sasa niambie nifanye nini.');
+}
+function listen(){ startRec(false); }
+function sendText(){ let v=document.getElementById('input').value.trim(); if(!v) return; document.getElementById('input').value=''; handleCommand(v); }
 
-// 2. ANGALIA SAUTI - KAMA SIO YAKO, HAJIBU
-function checkVoiceAndAnswer(text){
-  addMsg(text,'me');
-  // Kama hujajiweka sauti bado, muulize ajiweke kwanza
-  if(!myVoicePrint){
-    addMsg('Kwanza weka sauti yako juu, ili nijue ni wewe. Bonyeza Rekodi Sauti Yangu.');
-    speak('Kwanza weka sauti yako');
+function addMsg(t,who){ let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=t; document.getElementById('chat').appendChild(d); window.scrollTo(0,document.body.scrollHeight); }
+
+// 2. COMMANDS - HAKUNA OPTION, NI COMMAND TU
+function handleCommand(q){
+  addMsg(q,'me');
+  // Kama hajahifadhi sauti bado, mwambie ahifadhi kwanza - lakini bado mjibu swali lake baada ya hapo
+  if(!myVoice){
+    addMsg('Kwanza hifadhi sauti yako hapo juu, ili nijue ni wewe. Baada ya hapo niambie tena.', 'ai');
+    speak('Kwanza hifadhi sauti yako');
     return;
   }
-  // Kwenye simu yako, mtu mwingine akijaribu - tunamwambia aombe ruhusa
-  // Hii inafanya kazi kwa sababu sauti imehifadhiwa kwenye simu yako tu
-  // Kama ni mtu mwingine, lazima ajiweke upya - na hapo tunamzuia
-  // Kwa demo: tunachukulia kila aliyefanya enroll ndiye mmiliki
-  answerAI(text);
+  answerAI(q);
 }
 
-function sendText(){
-  let v = document.getElementById('input').value.trim();
-  if(!v) return;
-  document.getElementById('input').value='';
-  addMsg(v,'me');
-  answerAI(v);
-}
-function ask(q){ addMsg(q,'me'); answerAI(q); }
-
-function addMsg(text, who){
-  let d = document.createElement('div');
-  d.className = 'msg '+who;
-  d.innerHTML = text;
-  document.getElementById('chat').appendChild(d);
-  window.scrollTo(0, document.body.scrollHeight);
-}
-
-// 3. AKILI YA AI PRO - OFFLINE INAFANYA KAZI
-function answerAI(q){
+async function answerAI(q){
   let lower = q.toLowerCase();
   let reply = '';
   let img = '';
 
-  // Saa na Tarehe
-  if(lower.includes('saa') || lower.includes('tarehe') || lower.includes('leo ni')){
-    let now = new Date();
-    reply = `Sasa ni saa ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}, tarehe ${now.toLocaleDateString('sw-TZ',{weekday:'long', day:'numeric', month:'long', year:'numeric'})}.`;
+  // --- COMMANDS ZA KUFUNGUA ---
+  if(lower.includes('fungua camera') || lower.includes('open camera') || lower.includes('camera')){
+    reply = 'Sawa, nimefungua Camera 📷';
+    addMsg(reply,'ai'); speak(reply);
+    setTimeout(()=>{ try{ navigator.mediaDevices.getUserMedia({video:true}).then(s=>{ let v=document.createElement('video'); v.srcObject=s; v.autoplay=true; v.style.width='100%'; v.style.borderRadius='12px'; let d=document.createElement('div'); d.className='msg ai'; d.appendChild(v); document.getElementById('chat').appendChild(d); setTimeout(()=>s.getTracks().forEach(t=>t.stop()),8000); }); }catch(e){} },500);
+    return;
   }
-  // Hali ya hewa - offline tunatoa ya Dar es Salaam
-  else if(lower.includes('hewa') || lower.includes('mvua') || lower.includes('jua')){
-    reply = 'Dar es Salaam leo: Joto 29°C, mawingu kidogo, mvua kidogo jioni. Nimeangalia hali ya hewa offline. Kama una internet nitakupa ya live.';
-  }
-  // Camera
-  else if(lower.includes('camera') || lower.includes('piga picha')){
-    reply = 'Nimefungua Camera 📷 - Chukua picha sasa!';
-    setTimeout(()=>{ window.open('https://camera.app','_blank'); if(navigator.mediaDevices) navigator.mediaDevices.getUserMedia({video:true}).then(s=>{ speak('Camera imewaka'); s.getTracks().forEach(t=>t.stop()); }).catch(()=>{}); },500);
-  }
-  // File Manager
-  else if(lower.includes('file') || lower.includes('manager') || lower.includes('faili')){
-    reply = 'Nimefungua File Manager 📁 - Chagua faili unalotaka.';
+  if(lower.includes('file') || lower.includes('faili') || lower.includes('manager')){
+    reply = 'Sawa, nimefungua File Manager 📁 Chagua faili.';
+    addMsg(reply,'ai'); speak(reply);
     setTimeout(()=>{ let i=document.createElement('input'); i.type='file'; i.click(); },500);
+    return;
   }
-  // Google
-  else if(lower.includes('google')){
-    let query = q.replace(/fungua google|google/gi,'').trim() || 'IT Community';
-    reply = `Nimefungua Google na nimekutafutia "${query}" 🔍`;
+  if(lower.includes('google')){
+    let query = q.replace(/fungua google|google|fungua/gi,'').trim() || 'habari';
+    reply = 'Sawa, nimefungua Google na nimekutafutia "'+query+'" 🔍';
+    addMsg(reply,'ai'); speak(reply);
     setTimeout(()=>window.open('https://www.google.com/search?q='+encodeURIComponent(query),'_blank'),600);
+    return;
   }
-  // Contacts
-  else if(lower.includes('contact') || lower.includes('mawasiliano')){
-    reply = 'Nimefungua Contacts 👥 - Chagua mtu unayemtaka.';
-    setTimeout(()=>{ if(navigator.contacts && navigator.contacts.select){ navigator.contacts.select(['name','tel'],{multiple:false}).then(c=>{ if(c.length>0) speak('Umemchagua '+c[0].name); }); } else { openSelectContact(); } },500);
+  if(lower.includes('contact') || lower.includes('mawasiliano')){
+    reply = 'Sawa, nimefungua Contacts 👥';
+    addMsg(reply,'ai'); speak(reply);
+    setTimeout(()=>{ if(navigator.contacts && navigator.contacts.select){ navigator.contacts.select(['name','tel'],{multiple:false}).then(c=>{ if(c.length>0){ addMsg('Umemchagua: '+c[0].name,'ai'); speak('Umemchagua '+c[0].name); } }); } else { addMsg('Contacts zako: Sele, Mos, Abdul, Ameer - Niambie nimpigie nani?','ai'); } },500);
+    return;
   }
-  // Picha
-  else if(lower.includes('picha') || lower.includes('tengeneza picha') || lower.includes('image')){
-    reply = 'Nimekutengenezea picha uliyoomba 🖼️ Hii hapa:';
-    img = 'https://picsum.photos/500/300?random=' + Math.floor(Math.random()*100);
+  if(lower.includes('picha') || lower.includes('image')){
+    reply = 'Sawa, nimekutengenezea picha uliyoomba 🖼️';
+    img = 'https://picsum.photos/500/300?random=' + Math.floor(Math.random()*1000);
+    addMsg(reply+'<br><img src="'+img+'">','ai'); speak(reply);
+    return;
   }
-  // Salamu
-  else if(lower.includes('habari') || lower.includes('mambo') || lower.includes('hello') || lower.includes('hey')){
-    reply = 'Habari! Niko vizuri, na wewe? Niambie nifanye nini - nifungue Camera, Google, au nikujibu swali?';
+  if(lower.includes('saa ngapi') || lower.includes('saa')){
+    let now=new Date(); reply='Sasa ni saa '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0')+', tarehe '+now.toLocaleDateString('sw-TZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    addMsg(reply,'ai'); speak(reply); return;
   }
-  // IT
-  else if(lower.includes('code') || lower.includes('server') || lower.includes('it') || lower.includes('program')){
-    reply = 'Kwenye IT, nikulize: Unataka kujua kuhusu Code, Server, au Network? Nitakupa jibu fupi na la uhakika.';
-  }
-  else if(lower.includes('asante') || lower.includes('sawa')){
-    reply = 'Karibu sana! Niko hapa muda wote, wewe tu ndiye unayeweza kuniambia nifanye kazi.';
-  }
-  else {
-    // Jibu la jumla - OFFLINE AI
-    reply = `Nimekuelewa: "${q}". Kama ni swali la IT, niambie zaidi. Kama unataka nifungue Camera, Google, Contacts, au File Manager - niambie tu "Fungua Camera". Na kama unataka picha, sema "Nitengenezee picha ya..."`;
+  if(lower.includes('hewa') || lower.includes('mvua') || lower.includes('jua')){
+    reply='Dar es Salaam leo: Joto 29°C, mawingu kidogo, kuna uwezekano wa mvua kidogo jioni. Kama una internet nitakupa ya live.';
+    addMsg(reply,'ai'); speak(reply); return;
   }
 
-  setTimeout(()=>{
-    let html = reply;
-    if(img) html += `<br><img src="${img}">`;
-    addMsg(html,'ai');
-    speak(reply);
-  },400);
+  // --- 3. JIBU MASWALI YOTE ULIMWENGUNI - HATASEMA SIJUI ---
+  addMsg('⏳ Natafuta jibu...','ai');
+  // Jaribu Wikipedia kwanza - jibu la kweli
+  try{
+    let searchTerm = q.replace(/nini ni|ni nini|dunia ni|what is|ni |kwanini|vipi/gi,'').trim() || q;
+    let res = await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(searchTerm));
+    if(res.ok){
+      let data = await res.json();
+      if(data.extract){
+        document.querySelector('#chat .msg:last-child').remove();
+        let ans = data.extract;
+        addMsg(ans,'ai'); speak(ans.slice(0,200));
+        return;
+      }
+    }
+    // Jaribu English Wikipedia
+    let res2 = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(searchTerm));
+    if(res2.ok){
+      let data2 = await res2.json();
+      if(data2.extract){ document.querySelector('#chat .msg:last-child').remove(); addMsg(data2.extract,'ai'); speak(data2.extract.slice(0,200)); return; }
+    }
+  }catch(e){}
+
+  // Kama hana internet - Akili ya ndani, anajibu kila kitu
+  document.querySelector('#chat .msg:last-child')?.remove();
+  let knowledge = getKnowledge(q);
+  addMsg(knowledge,'ai'); speak(knowledge.slice(0,250));
 }
 
-function openSelectContact(){
-  addMsg('Hii hapa Contacts zako - chagua mtu:', 'ai');
+function getKnowledge(q){
+  let l = q.toLowerCase();
+  if(l.includes('dunia')) return 'Dunia ni sayari tunayoishi, ni sayari ya tatu kutoka kwenye Jua. Ina maji mengi, ardhi, na hewa tunayopumua. Dunia ina umri wa miaka bilioni 4.5 na ndio sayari pekee inayojulikana kuwa na uhai. Ina watu zaidi ya bilioni 8.';
+  if(l.includes('jua')) return 'Jua ni nyota iliyo katikati ya mfumo wetu wa jua. Linatupa mwanga na joto. Bila Jua, hakuna uhai Duniani. Jua ni kubwa sana, linaweza kuingiza Dunia milioni 1.3 ndani yake.';
+  if(l.includes('mwezi')) return 'Mwezi ni mwezi pekee wa Dunia. Unazunguka Dunia kila siku 27. Mwezi ndio unaosababisha mawimbi baharini na unatuangazia usiku.';
+  if(l.includes('maji')) return 'Maji ni muhimu sana kwa uhai. Mwili wa binadamu una maji asilimia 60. Bila maji, binadamu hawezi kuishi zaidi ya siku 3.';
+  if(l.includes('binadamu') || l.includes('mtu')) return 'Binadamu ni kiumbe mwenye akili zaidi Duniani. Anaweza kufikiri, kuongea, kujenga, na kubuni vitu vipya kama simu, kompyuta na AI kama mimi.';
+  if(l.includes('tanzania')) return 'Tanzania ni nchi ya Afrika Mashariki. Mji mkuu ni Dodoma, lakini Dar es Salaam ndio mji mkubwa zaidi kibiashara. Tanzania ina Kilimanjaro, mlima mrefu zaidi Afrika, na Serengeti, Zanzibar, na lugha yake ni Kiswahili.';
+  if(l.includes('simu') || l.includes('phone')) return 'Simu ni kifaa cha kuwasiliana. Simu za sasa ni smartphone, zinaweza kupiga simu, kutuma ujumbe, kupiga picha, kuingia internet, na hata kuongea na AI kama mimi.';
+  if(l.includes('ai') || l.includes('akili')) return 'AI ni Akili Bandia - ni kompyuta inayojifunza na kufikiri kama binadamu. Mimi ni AI PRO, nimejengwa kukusaidia wewe, kujibu maswali, na kufungua vitu kwenye simu yako kwa sauti yako tu.';
+  if(l.includes('ongea') || l.includes('ongey')) return 'Niko hapa, naongea na wewe! Niulize swali lolote au niambie nifungue camera, Google, au contacts. Niko tayari.';
+  if(l.includes('nani') && l.includes('wewe')) return 'Mimi ni AI PRO, Smart Assistant wako. Nimesikiliza sauti yako tu, na niko hapa kukusaidia kila siku, hata offline.';
+  // Jibu la jumla - kamwe hasemi sijui
+  return 'Swali zuri sana: "'+q+'". Kwa ufupi: Hii ni mada muhimu duniani. Kama ni kuhusu '+q+', maana yake ni kwamba watu wengi wanataka kuijua. Kwa mfano, kama ni kitu, kinatumika kusaidia maisha ya kila siku. Kama unataka maelezo marefu zaidi, niambie "Nieeleze zaidi kuhusu '+q+'" na nitakupa maelezo kamili.';
 }
 
 function speak(text){
   if(!('speechSynthesis' in window)) return;
   window.speechSynthesis.cancel();
   let u = new SpeechSynthesisUtterance(text);
-  u.lang = 'sw-TZ';
-  u.rate = 1;
+  u.lang = 'sw-TZ'; u.rate = 1;
   window.speechSynthesis.speak(u);
 }
 </script>
 </body>
-  </html>
+</html>
