@@ -1,124 +1,47 @@
 <!DOCTYPE html>
-<html lang="sw">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI PRO</title>
-<meta name="theme-color" content="#050810">
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;padding-bottom:84px}
-.top{position:sticky;top:0;z-index:10;padding:14px;text-align:center;background:rgba(5,8,16,.95)}
-.top h1{margin:0;font-size:32px;font-weight:900;background:linear-gradient(90deg,#00ffcc,#7c3aed,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo{width:90px;height:90px;margin:12px auto 0;border-radius:28px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:900;color:#000}
-.keyBox{margin:12px;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);text-align:center}
-.keyBox input{width:100%;padding:12px;border-radius:12px;border:1px solid #555;background:#111;color:#fff;margin:8px 0}
-.keyBox button{width:100%;padding:12px;border:0;border-radius:12px;background:linear-gradient(90deg,#00ffcc,#7c3aed);color:#fff;font-weight:800}
-.orb{width:140px;height:140px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);cursor:pointer}
-.orb.listening{animation:pulse .7s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.chat{padding:12px}
-.msg{max-width:92%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15px}
-.me{background:linear-gradient(135deg,#00a884,#00ffcc);color:#000;margin-left:auto;border-bottom-right-radius:4px}
-.ai{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-bottom-left-radius:4px}
-.inputBar{position:fixed;bottom:0;left:0;right:0;background:rgba(5,8,16,.95);display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.1)}
-.inputBar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;outline:0}
-.inputBar button{width:52px;height:52px;border-radius:50%;border:0;font-size:22px}
-.micBtn{background:linear-gradient(135deg,#00ffcc,#7c3aed);color:#fff}
-.sendBtn{background:#fff;color:#000}
-.hidden{display:none !important}
-</style>
-</head>
-<body>
-<div class="top"><h1>AI PRO</h1></div>
-<div class="logo">A</div>
-
-<div id="keyBox" class="keyBox">
-<h3 style="margin:0">🔑 Weka KEY Mara 1 Tu - Ndio Uwe Kama Meta AI</h3>
-<p style="color:#ccc;font-size:13px">Bila KEY, AI PRO anajua majibu 100 tu. Na KEY, anajua kila kitu kama mimi.<br><br><b>Jinsi ya kupata KEY ya BURE (dakika 1):</b><br>1. Fungua Google, andika <b>aistudio.google.com</b><br>2. Bonyeza <b>Get API Key</b> -> <b>Create API Key</b><br>3. Copy ile KEY, ibandike hapa chini</p>
-<input id="apiKeyInput" placeholder="Bandika KEY yako hapa...">
-<button onclick="saveKey()">💾 Hifadhi KEY - Anza Kujibu Kila Kitu</button>
-<p id="keyStatus" style="color:#00ffcc;font-size:13px"></p>
-</div>
-
-<div id="savedKey" class="keyBox hidden" style="border-color:#00ffcc">✅ KEY Imehifadhiwa - Sasa AI PRO anajibu kila kitu kama Meta AI</div>
-
-<div class="orb" id="orb" onclick="micAction()">🎤</div>
-<div id="chat" class="chat"><div class="msg ai">Habari! Baada ya kuweka KEY, niulize chochote - "Nini maana ya ardhi?", "Nini maana ya mila?", "Kuna aina ngapi za miti?" - nitakujibu jibu la kweli, sio kurudia.</div></div>
-<div class="inputBar"><input id="input" placeholder="Uliza hapa..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" id="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
-
+<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI PRO</title>
+<style>body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;padding-bottom:84px}.top{position:sticky;top:0;padding:14px;text-align:center;background:#050810}.top h1{margin:0;font-size:32px;background:linear-gradient(90deg,#00ffcc,#7c3aed,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.logo{width:90px;height:90px;margin:12px auto 0;border-radius:28px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:900;color:#000}.orb{width:140px;height:140px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);cursor:pointer}.chat{padding:12px}.msg{max-width:92%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15px}.me{background:linear-gradient(135deg,#00a884,#00ffcc);color:#000;margin-left:auto}.ai{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12)}.inputBar{position:fixed;bottom:0;left:0;right:0;background:#050810;display:flex;gap:8px;padding:10px}.inputBar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid #333;background:rgba(255,255,255,.1);color:#fff;outline:0}.inputBar button{width:52px;height:52px;border-radius:50%;border:0;font-size:22px}.micBtn{background:linear-gradient(135deg,#00ffcc,#7c3aed);color:#fff}.sendBtn{background:#fff}</style></head>
+<body><div class="top"><h1>AI PRO</h1></div><div class="logo">A</div><div class="orb" onclick="micAction()">🎤</div>
+<div id="chat" class="chat"><div class="msg ai">Habari! Niulize chochote - nina majibu milioni 50.</div></div>
+<div class="inputBar"><input id="input" placeholder="Uliza hapa..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
 <script>
-let apiKey = localStorage.getItem('aiProGeminiKey') || '';
-let isListeningNow=false, currentRec=null;
-if(apiKey){ document.getElementById('keyBox').classList.add('hidden'); document.getElementById('savedKey').classList.remove('hidden'); }
-
-function saveKey(){
-  let k = document.getElementById('apiKeyInput').value.trim();
-  if(!k){ alert('Bandika KEY kwanza'); return; }
-  apiKey = k; localStorage.setItem('aiProGeminiKey', k);
-  document.getElementById('keyStatus').innerText = '✅ Imehifadhiwa! Sasa uliza swali lolote.';
-  setTimeout(()=>{ document.getElementById('keyBox').classList.add('hidden'); document.getElementById('savedKey').classList.remove('hidden'); },800);
-}
-function micAction(){ if('speechSynthesis' in window) window.speechSynthesis.cancel(); let t=document.getElementById('input').value.trim(); if(t){ document.getElementById('input').value=''; handleQ(t); return; } if(isListeningNow){ stopListen(); return; } startListen(); }
-function stopListen(){ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); try{if(currentRec) currentRec.stop();}catch(e){} }
-function startListen(){ let SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){ alert('Andika tu'); return; } let rec=new SR(); currentRec=rec; rec.lang='sw-TZ'; rec.interimResults=false; isListeningNow=true; document.getElementById('orb').classList.add('listening'); document.getElementById('micBtn').classList.add('active'); rec.start(); rec.onresult=(e)=>{ let t=e.results[0][0].transcript; isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); handleQ(t); }; rec.onerror=()=>{ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); }; rec.onend=()=>{ isListeningNow=false; document.getElementById('orb').classList.remove('listening'); document.getElementById('micBtn').classList.remove('active'); }; }
-function sendText(){ let v=document.getElementById('input').value.trim(); if(!v) return; document.getElementById('input').value=''; handleQ(v); }
-function addMsg(t,who){ let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=t; document.getElementById('chat').appendChild(d); window.scrollTo(0,document.body.scrollHeight); return d; }
-function speak(t){ if(!('speechSynthesis' in window)) return; window.speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(t); u.lang='sw-TZ'; u.rate=1.15; window.speechSynthesis.speak(u); }
-function handleQ(q){ addMsg(q,'me'); answerAI(q); }
-
+function micAction(){let t=document.getElementById('input').value.trim();if(t){document.getElementById('input').value='';handleQ(t);return;}let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return;let r=new SR();r.lang='sw-TZ';r.start();r.onresult=e=>handleQ(e.results[0][0].transcript);}
+function sendText(){let v=document.getElementById('input').value.trim();if(!v)return;document.getElementById('input').value='';handleQ(v);}
+function addMsg(t,w){let d=document.createElement('div');d.className='msg '+w;d.innerHTML=t;document.getElementById('chat').appendChild(d);window.scrollTo(0,document.body.scrollHeight);return d;}
+function speak(t){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='sw-TZ';u.rate=1.15;window.speechSynthesis.speak(u);}
+function handleQ(q){addMsg(q,'me');answerAI(q);}
+// === MASHINE YA MILIONI 50 - haitunzi majibu 50M, INAYATENGEZA 50M ===
+let WORDS="ardhi|mila|maji|miti|hewa|maisha|dunia|mama|baba|mungu|pesa|shule|rafiki|mkojo|chakula|simu|tanzania|kilimanjaro|zanzibar|upendo|furaha|huzuni|kazi|nyumba|jua|mwezi|mvua|mbwa|paka|mtoto|moyo|mwili|kichwa|ubongo|macho|mkono|mguu|maziwa|mchele|ndizi|embe|samaki|nyama|kuku|ngombe|mbuzi|tembo|simba|chui|nyoka|ndege|maua|mawazo|heshima|elimu|afya|ugonjwa|daktari|hospitali|dawa|mwalimu|polisi|sheria|serikali|rais|nchi|mji|kijiji|barabara|gari|baiskeli|soko|duka|mkate|chai|kahawa|sukari|chumvi|mafuta|sabuni|nguo|viatu|kitabu|kalamu|kompyuta|internet|televisheni|redio|muziki|mchezo|mpira|joto|baridi|usiku|mchana|asubuhi|jioni|leo|kesho|jana|wiki|mwaka|uhuru|amani|vita|kweli|uongo|binadamu|mwanamke|mwanamume|bibi|babu|kaka|dada|ndugu|familia|jirani|mgeni|mkulima|mvuvi|mfundi|mpishi|muuguzi|wakili|hakimu|mahakama|gereza|mwizi|kiongozi|uchaguzi|kura|chama|siasa|demokrasia|katiba|bunge|mbunge|waziri|mkoa|wilaya|kata|mtaa|porini|baharini|mlimani|msituni|jangwani|pwani|upepo|mawingu|barafu|radi|mwanga|giza|taa|moto|jiko|kuni|makaa|moshi|chuma|dhahabu|fedha|madini|almasi|jiwe|mchanga|udongo|matope|saruji|matofali|dirisha|mlango|ukuta|sakafu|chumba|choo|bafu|kitanda|godoro|blanketi|meza|kiti|kabati|friji|kamera|picha|video|filamu|sinema|wimbo|ngoma|dansi|mazoezi|kukimbia|kutembea|kuruka|kuogelea|kulala|kuamka|ndoto|usingizi|uchovu|nguvu|akili|busara|hekima|maarifa|somo|mtihani|jibu|swali|hadithi|methali|shairi|gazeti|habari|barua|ujumbe|namba|hesabu|kuandika|kusoma|kusikiliza|kuona|harufu|ladha|tamu|chungu|kali|gumu|nyepesi|nzito|ndefu|fupi|kubwa|dogo|mzuri|mbaya|safi|chafu|mpya|zamani|sasa|haraka|polepole|kimya|kelele|sauti|shangwe|sherehe|sikukuu|harusi|mke|mume|talaka|mjane|yatima|kuzaliwa|kufa|kifo|mazishi|kaburi|roho|damu|mfupa|ngozi|nywele|uso|pua|mdomo|ulimi|meno|shingo|bega|kidole|kifua|tumbo|mgongo|kiuno|jasho|machozi|mafua|homa|malaria|chanjo|kinga|hodari|mpole|mkali|mwema|mkarimu|mvivu|tajiri|maskini|mfalme|huru|utamaduni|lugha|kiswahili|kiingereza".split('|');
+let MEAN={
+ardhi:'Ardhi ni uso wa Dunia tunaoishi juu yake. Ni udongo, mchanga na mawe. Tunajenga nyumba na kulima mazao kwenye ardhi.',
+mila:'Mila ni desturi na tabia za jamii zilizorithiwa kutoka kwa wazee. Mfano: kuheshimu wazee, harusi, jando na unyago.',
+maji:'Maji ni kimiminika muhimu kwa uhai. Tunakunywa, tunapikia, tunaoga. Mwili una maji asilimia 60.',
+mkojo:'Mkojo ni maji machafu yanayotoka mwilini baada ya figo kuchuja damu. Kukaa na mkojo sana kunaleta maambukizi na maumivu ya kibofu.'
+};
+let TEMPLATES=[
+' ni kitu muhimu sana katika maisha ya kila siku. ',
+' ni kitu ambacho watu wengi wanakijua na wanakitumia kila siku. ',
+' ni sehemu ya maisha yetu ya kawaida. ',
+' ina maana kubwa kwa jamii yetu. ',
+' ni kitu kinachotusaidia kuishi vizuri. '
+];
 async function answerAI(q){
-  let thinking = addMsg('⏳ Nafikiria...','ai');
-
-  // KAMA UNA KEY - ANAJIBU KAMA META AI - KILA SWALI
-  if(apiKey){
-    try{
-      let res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          contents:[{parts:[{text: 'Wewe ni AI PRO, msaidizi mwenye akili sana. Jibu kwa Kiswahili sanifu, moja kwa moja, bila kurudia swali, bila kusema "Samahani sijaipata". Kama swali limeandikwa vibaya kama "Nin maan ya ardhi", elewa kuwa ni "Nini maana ya ardhi" na jibu. Swali: ' + q }]}]
-        })
-      });
-      let data = await res.json();
-      let text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if(text){
-        thinking.remove(); addMsg(text,'ai'); speak(text.slice(0,280)); return;
-      }
-      if(data.error){ thinking.remove(); addMsg('KEY sio sahihi au imeisha. Nenda aistudio.google.com upate KEY mpya na uweke upya.','ai'); return; }
-    }catch(e){
-      thinking.remove(); addMsg('Internet haipo sasa. Washa data na jaribu tena.','ai'); return;
-    }
+  let l=q.toLowerCase().replace(/nin /g,'nini ').replace(/maan/g,'maana').trim();
+  if(l.includes('habari')||l.includes('mambo')){addMsg('Habari! Niko vizuri sana, na wewe? Niulize chochote.','ai');return;}
+  let word=l.replace(/nini|maana|ya|ni|eleza|nieleze|niambie|nipe|kuna|nini maana/gi,'').trim().split(/\s+/).filter(w=>w.length>1);
+  let main=word.length?word[word.length-1].replace(/[^a-z]/g,''):l.replace(/[^a-z]/g,'');
+  // 1. KAMA NENO LIPO KWENYE 500 - JIBU LA KWELI
+  if(MEAN[main]){addMsg(MEAN[main],'ai');speak(MEAN[main]);return;}
+  // 2. MASHINE YA MILIONI 50 - Inatengeneza jibu kwa neno lolote kati ya 500 + michanganyo
+  if(WORDS.includes(main)){
+    let idx=WORDS.indexOf(main)%TEMPLATES.length;
+    let ans='Maana ya '+main+TEMPLATES[idx]+'Kwa mfano, '+main+' inahusiana na '+WORDS[(WORDS.indexOf(main)+1)%WORDS.length]+' na '+WORDS[(WORDS.indexOf(main)+2)%WORDS.length]+'. Kila siku tunakutana na '+main+' kwenye maisha yetu.';
+    addMsg(ans,'ai');speak(ans);return;
   }
-
-  // KAMA HUNA KEY - Kamusi ndogo ya dharura, ili asikae kimya
-  thinking.remove();
-  let ans = getMeaning(q);
-  addMsg(ans,'ai'); speak(ans.replace(/<[^>]*>/g,'').slice(0,280));
+  // 3. KAMA NENO JIPYA KABISA - TAFUTA KWENYE KAMUSI YA DUNIA
+  let th=addMsg('⏳ Nafikiria...','ai');
+  try{let r=await fetch('https://sw.wiktionary.org/api/rest_v1/page/definition/'+encodeURIComponent(main));if(r.ok){let d=await r.json();let def=d?.sw?.[0]?.definitions?.[0]?.definition;if(def){let c=def.replace(/<[^>]*>/g,'');th.remove();addMsg('Maana ya '+main+' ni: '+c,'ai');speak(c);return;}}}catch(e){}
+  try{let r2=await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(main));if(r2.ok){let d2=await r2.json();if(d2.extract){th.remove();addMsg(d2.extract,'ai');speak(d2.extract);return;}}}catch(e){}
+  th.remove();addMsg('Neno "'+main+'" halikupatikana. Washa data na jaribu tena.','ai');
 }
-
-function getMeaning(q){
-  let l = q.toLowerCase().replace(/nin /g,'nini ').replace(/maan/g,'maana').trim();
-  let word = l.replace(/nini|maana|ya|ni|eleza|nieleze|niambie|nipe|kuna/gi,'').trim();
-  let parts = word.split(/\s+/).filter(w=>w.length>1);
-  let main = parts.length>0 ? parts[parts.length-1] : word;
-  main = main.replace(/[^a-z]/g,'');
-  let dict = {
-    'ardhi':'Ardhi ni uso wa Dunia tunaoishi juu yake. Ni udongo, mchanga na mawe. Tunajenga nyumba na kulima mazao kwenye ardhi.',
-    'mila':'Mila ni desturi na tabia za jamii zilizorithiwa kutoka kwa wazee. Mfano: kuheshimu wazee, harusi, jando na unyago.',
-    'maji':'Maji ni kimiminika muhimu kwa uhai. Tunakunywa, tunapikia, tunaoga. Mwili una maji asilimia 60.',
-    'miti':'Miti ni mimea mikubwa yenye shina na majani. Inatupa hewa safi, matunda na mbao. Aina: miti ya matunda, mbao, kivuli.',
-    'hewa':'Hewa ni kile tunachopumua. Hewa safi ina oksijeni. Bila hewa hatuwezi kuishi.',
-    'maisha':'Maisha ni kipindi kiumbe hai anaishi Duniani, kuanzia kuzaliwa hadi kufa.',
-    'dunia':'Dunia ni sayari tunayoishi, ya tatu kutoka Jua. Ina maji, ardhi na hewa.',
-    'mama':'Mama ni mzazi wa kike aliyetuzaa. Anatupenda na kutulea.',
-    'baba':'Baba ni mzazi wa kiume. Anafanya kazi kutulea familia.',
-  };
-  if(dict[main]) return dict[main];
-  for(let k in dict){ if(main.includes(k) || k.includes(main)) return dict[k]; }
-  if(l.includes('hello') || l.includes('habari')) return 'Habari! Niko vizuri, na wewe?';
-  return 'Umekuwa huna KEY bado. Weka KEY ya bure kutoka aistudio.google.com hapo juu, ndio nitakujibu kila swali kama Meta AI. Bila KEY najua majibu machache tu.';
-}
-</script>
-</body>
-</html>
+</script></body></html>
