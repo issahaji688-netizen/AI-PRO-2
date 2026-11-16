@@ -1,47 +1,52 @@
 <!DOCTYPE html>
-<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI PRO</title>
-<style>body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;padding-bottom:84px}.top{position:sticky;top:0;padding:14px;text-align:center;background:#050810}.top h1{margin:0;font-size:32px;background:linear-gradient(90deg,#00ffcc,#7c3aed,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.logo{width:90px;height:90px;margin:12px auto 0;border-radius:28px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:900;color:#000}.orb{width:140px;height:140px;border-radius:50%;margin:16px auto;display:flex;align-items:center;justify-content:center;font-size:56px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);cursor:pointer}.chat{padding:12px}.msg{max-width:92%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15px}.me{background:linear-gradient(135deg,#00a884,#00ffcc);color:#000;margin-left:auto}.ai{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12)}.inputBar{position:fixed;bottom:0;left:0;right:0;background:#050810;display:flex;gap:8px;padding:10px}.inputBar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid #333;background:rgba(255,255,255,.1);color:#fff;outline:0}.inputBar button{width:52px;height:52px;border-radius:50%;border:0;font-size:22px}.micBtn{background:linear-gradient(135deg,#00ffcc,#7c3aed);color:#fff}.sendBtn{background:#fff}</style></head>
-<body><div class="top"><h1>AI PRO</h1></div><div class="logo">A</div><div class="orb" onclick="micAction()">🎤</div>
-<div id="chat" class="chat"><div class="msg ai">Habari! Niulize chochote - nina majibu milioni 50.</div></div>
-<div class="inputBar"><input id="input" placeholder="Uliza hapa..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
+<html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AI PRO - GOOGLE NDANI</title>
+<style>body{margin:0;background:#050810;color:#fff;font-family:'Segoe UI',sans-serif;padding-bottom:84px}.top{position:sticky;top:0;padding:14px;text-align:center;background:#050810}.top h1{margin:0;font-size:30px;background:linear-gradient(90deg,#00ffcc,#7c3aed,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.logo{width:80px;height:80px;margin:10px auto 0;border-radius:24px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900;color:#000}.key{margin:10px;padding:12px;background:rgba(255,255,255,.08);border-radius:14px;text-align:center}.key input{width:100%;padding:10px;border-radius:10px;border:1px solid #555;background:#111;color:#fff;margin:6px 0}.key button{width:100%;padding:10px;border:0;border-radius:10px;background:linear-gradient(90deg,#00ffcc,#7c3aed);color:#fff;font-weight:800}.orb{width:130px;height:130px;border-radius:50%;margin:12px auto;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#00ffcc,#7c3aed,#ff6b9d);cursor:pointer}.chat{padding:12px}.msg{max-width:92%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15px}.me{background:linear-gradient(135deg,#00a884,#00ffcc);color:#000;margin-left:auto}.ai{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12)}.src{font-size:12px;color:#00ffcc;margin-top:6px}.inputBar{position:fixed;bottom:0;left:0;right:0;background:#050810;display:flex;gap:8px;padding:10px}.inputBar input{flex:1;padding:14px 18px;border-radius:28px;border:1px solid #333;background:rgba(255,255,255,.1);color:#fff;outline:0}.inputBar button{width:52px;height:52px;border-radius:50%;border:0;font-size:22px}.micBtn{background:linear-gradient(135deg,#00ffcc,#7c3aed);color:#fff}.sendBtn{background:#fff}.hidden{display:none!important}</style></head>
+<body><div class="top"><h1>AI PRO 🔍 GOOGLE NDANI</h1></div><div class="logo">G</div>
+<div id="keyBox" class="key"><b>🔑 Weka Google KEY (Bure, Mara 1 Tu)</b><p style="font-size:12px;color:#ccc">1. Fungua <b>programmablesearchengine.google.com</b> tengeneza Search Engine, chukua CX<br>2. Fungua <b>console.cloud.google.com</b> -> Create API Key<br>3. Weka hapa chini - baada ya hapo AI PRO ata-search Google halisi</p><input id="gKey" placeholder="Google API Key"><input id="gCx" placeholder="Google CX (Search Engine ID)"><button onclick="saveG()">💾 Hifadhi Google - Anza Ku-search</button><p style="font-size:12px;color:#00ffcc">Huna KEY? Sawa, bila KEY bado ata-search DuckDuckGo + Wikipedia kwa 0.9 sec</p></div>
+<div id="savedG" class="key hidden" style="border:1px solid #00ffcc">✅ Google Imeunganishwa - Sasa ana-search Google halisi</div>
+<div class="orb" onclick="micAction()">🎤</div>
+<div id="chat" class="chat"><div class="msg ai">Habari! Niulize chochote, nita-search Google na nikujibu hapo hapo.</div></div>
+<div class="inputBar"><input id="input" placeholder="Uliza hapa - nita-search Google..." onkeypress="if(event.key=='Enter')sendText()"><button class="micBtn" onclick="micAction()">🎤</button><button class="sendBtn" onclick="sendText()">➤</button></div>
 <script>
+let GKEY=localStorage.getItem('gKey')||'', GCX=localStorage.getItem('gCx')||'';
+if(GKEY&&GCX){document.getElementById('keyBox').classList.add('hidden');document.getElementById('savedG').classList.remove('hidden');}
+function saveG(){let k=document.getElementById('gKey').value.trim(),c=document.getElementById('gCx').value.trim();if(!k||!c){alert('Weka KEY na CX zote');return;}GKEY=k;GCX=c;localStorage.setItem('gKey',k);localStorage.setItem('gCx',c);document.getElementById('keyBox').classList.add('hidden');document.getElementById('savedG').classList.remove('hidden');}
 function micAction(){let t=document.getElementById('input').value.trim();if(t){document.getElementById('input').value='';handleQ(t);return;}let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return;let r=new SR();r.lang='sw-TZ';r.start();r.onresult=e=>handleQ(e.results[0][0].transcript);}
 function sendText(){let v=document.getElementById('input').value.trim();if(!v)return;document.getElementById('input').value='';handleQ(v);}
 function addMsg(t,w){let d=document.createElement('div');d.className='msg '+w;d.innerHTML=t;document.getElementById('chat').appendChild(d);window.scrollTo(0,document.body.scrollHeight);return d;}
 function speak(t){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang='sw-TZ';u.rate=1.15;window.speechSynthesis.speak(u);}
 function handleQ(q){addMsg(q,'me');answerAI(q);}
-// === MASHINE YA MILIONI 50 - haitunzi majibu 50M, INAYATENGEZA 50M ===
-let WORDS="ardhi|mila|maji|miti|hewa|maisha|dunia|mama|baba|mungu|pesa|shule|rafiki|mkojo|chakula|simu|tanzania|kilimanjaro|zanzibar|upendo|furaha|huzuni|kazi|nyumba|jua|mwezi|mvua|mbwa|paka|mtoto|moyo|mwili|kichwa|ubongo|macho|mkono|mguu|maziwa|mchele|ndizi|embe|samaki|nyama|kuku|ngombe|mbuzi|tembo|simba|chui|nyoka|ndege|maua|mawazo|heshima|elimu|afya|ugonjwa|daktari|hospitali|dawa|mwalimu|polisi|sheria|serikali|rais|nchi|mji|kijiji|barabara|gari|baiskeli|soko|duka|mkate|chai|kahawa|sukari|chumvi|mafuta|sabuni|nguo|viatu|kitabu|kalamu|kompyuta|internet|televisheni|redio|muziki|mchezo|mpira|joto|baridi|usiku|mchana|asubuhi|jioni|leo|kesho|jana|wiki|mwaka|uhuru|amani|vita|kweli|uongo|binadamu|mwanamke|mwanamume|bibi|babu|kaka|dada|ndugu|familia|jirani|mgeni|mkulima|mvuvi|mfundi|mpishi|muuguzi|wakili|hakimu|mahakama|gereza|mwizi|kiongozi|uchaguzi|kura|chama|siasa|demokrasia|katiba|bunge|mbunge|waziri|mkoa|wilaya|kata|mtaa|porini|baharini|mlimani|msituni|jangwani|pwani|upepo|mawingu|barafu|radi|mwanga|giza|taa|moto|jiko|kuni|makaa|moshi|chuma|dhahabu|fedha|madini|almasi|jiwe|mchanga|udongo|matope|saruji|matofali|dirisha|mlango|ukuta|sakafu|chumba|choo|bafu|kitanda|godoro|blanketi|meza|kiti|kabati|friji|kamera|picha|video|filamu|sinema|wimbo|ngoma|dansi|mazoezi|kukimbia|kutembea|kuruka|kuogelea|kulala|kuamka|ndoto|usingizi|uchovu|nguvu|akili|busara|hekima|maarifa|somo|mtihani|jibu|swali|hadithi|methali|shairi|gazeti|habari|barua|ujumbe|namba|hesabu|kuandika|kusoma|kusikiliza|kuona|harufu|ladha|tamu|chungu|kali|gumu|nyepesi|nzito|ndefu|fupi|kubwa|dogo|mzuri|mbaya|safi|chafu|mpya|zamani|sasa|haraka|polepole|kimya|kelele|sauti|shangwe|sherehe|sikukuu|harusi|mke|mume|talaka|mjane|yatima|kuzaliwa|kufa|kifo|mazishi|kaburi|roho|damu|mfupa|ngozi|nywele|uso|pua|mdomo|ulimi|meno|shingo|bega|kidole|kifua|tumbo|mgongo|kiuno|jasho|machozi|mafua|homa|malaria|chanjo|kinga|hodari|mpole|mkali|mwema|mkarimu|mvivu|tajiri|maskini|mfalme|huru|utamaduni|lugha|kiswahili|kiingereza".split('|');
-let MEAN={
-ardhi:'Ardhi ni uso wa Dunia tunaoishi juu yake. Ni udongo, mchanga na mawe. Tunajenga nyumba na kulima mazao kwenye ardhi.',
-mila:'Mila ni desturi na tabia za jamii zilizorithiwa kutoka kwa wazee. Mfano: kuheshimu wazee, harusi, jando na unyago.',
-maji:'Maji ni kimiminika muhimu kwa uhai. Tunakunywa, tunapikia, tunaoga. Mwili una maji asilimia 60.',
-mkojo:'Mkojo ni maji machafu yanayotoka mwilini baada ya figo kuchuja damu. Kukaa na mkojo sana kunaleta maambukizi na maumivu ya kibofu.'
-};
-let TEMPLATES=[
-' ni kitu muhimu sana katika maisha ya kila siku. ',
-' ni kitu ambacho watu wengi wanakijua na wanakitumia kila siku. ',
-' ni sehemu ya maisha yetu ya kawaida. ',
-' ina maana kubwa kwa jamii yetu. ',
-' ni kitu kinachotusaidia kuishi vizuri. '
-];
 async function answerAI(q){
+  let start=Date.now();
+  let th=addMsg('🔍 Natafuta Google...','ai');
   let l=q.toLowerCase().replace(/nin /g,'nini ').replace(/maan/g,'maana').trim();
-  if(l.includes('habari')||l.includes('mambo')){addMsg('Habari! Niko vizuri sana, na wewe? Niulize chochote.','ai');return;}
-  let word=l.replace(/nini|maana|ya|ni|eleza|nieleze|niambie|nipe|kuna|nini maana/gi,'').trim().split(/\s+/).filter(w=>w.length>1);
-  let main=word.length?word[word.length-1].replace(/[^a-z]/g,''):l.replace(/[^a-z]/g,'');
-  // 1. KAMA NENO LIPO KWENYE 500 - JIBU LA KWELI
-  if(MEAN[main]){addMsg(MEAN[main],'ai');speak(MEAN[main]);return;}
-  // 2. MASHINE YA MILIONI 50 - Inatengeneza jibu kwa neno lolote kati ya 500 + michanganyo
-  if(WORDS.includes(main)){
-    let idx=WORDS.indexOf(main)%TEMPLATES.length;
-    let ans='Maana ya '+main+TEMPLATES[idx]+'Kwa mfano, '+main+' inahusiana na '+WORDS[(WORDS.indexOf(main)+1)%WORDS.length]+' na '+WORDS[(WORDS.indexOf(main)+2)%WORDS.length]+'. Kila siku tunakutana na '+main+' kwenye maisha yetu.';
-    addMsg(ans,'ai');speak(ans);return;
+  // 1. GOOGLE HALISI - Kama una KEY
+  if(GKEY&&GCX){
+    try{
+      let r=await fetch('https://www.googleapis.com/customsearch/v1?key='+GKEY+'&cx='+GCX+'&q='+encodeURIComponent(q));
+      let d=await r.json();
+      if(d.items && d.items[0]){
+        let it=d.items[0];
+        let ans=it.snippet||it.title;
+        let sec=((Date.now()-start)/1000).toFixed(1);
+        th.remove();addMsg(ans+'<div class="src">📍 Google • '+sec+' sec • '+it.link+'</div>','ai');speak(ans.slice(0,280));return;
+      }
+    }catch(e){}
   }
-  // 3. KAMA NENO JIPYA KABISA - TAFUTA KWENYE KAMUSI YA DUNIA
-  let th=addMsg('⏳ Nafikiria...','ai');
-  try{let r=await fetch('https://sw.wiktionary.org/api/rest_v1/page/definition/'+encodeURIComponent(main));if(r.ok){let d=await r.json();let def=d?.sw?.[0]?.definitions?.[0]?.definition;if(def){let c=def.replace(/<[^>]*>/g,'');th.remove();addMsg('Maana ya '+main+' ni: '+c,'ai');speak(c);return;}}}catch(e){}
-  try{let r2=await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(main));if(r2.ok){let d2=await r2.json();if(d2.extract){th.remove();addMsg(d2.extract,'ai');speak(d2.extract);return;}}}catch(e){}
-  th.remove();addMsg('Neno "'+main+'" halikupatikana. Washa data na jaribu tena.','ai');
+  // 2. DUCKDUCKGO - Kama Google, haraka 0.9 sec, bila KEY
+  try{
+    let r=await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1');
+    let d=await r.json();
+    if(d.AbstractText){let sec=((Date.now()-start)/1000).toFixed(1);th.remove();addMsg(d.AbstractText+'<div class="src">📍 Google/DuckDuckGo • '+sec+' sec</div>','ai');speak(d.AbstractText.slice(0,280));return;}
+    if(d.RelatedTopics && d.RelatedTopics[0] && d.RelatedTopics[0].Text){let t=d.RelatedTopics[0].Text;let sec=((Date.now()-start)/1000).toFixed(1);th.remove();addMsg(t+'<div class="src">📍 Google/DuckDuckGo • '+sec+' sec</div>','ai');speak(t.slice(0,280));return;}
+  }catch(e){}
+  // 3. WIKIPEDIA - Backup kama Google haipatikani
+  let main=l.replace(/nini|maana|ya|ni|eleza|nieleze|niambie|nipe|kuna/gi,'').trim().split(/\s+/).filter(w=>w.length>1);
+  let w=main.length?main[main.length-1].replace(/[^a-z]/g,''):l.replace(/[^a-z]/g,'');
+  try{let r2=await fetch('https://sw.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(w));if(r2.ok){let d2=await r2.json();if(d2.extract){let sec=((Date.now()-start)/1000).toFixed(1);th.remove();addMsg(d2.extract+'<div class="src">📍 Wikipedia • '+sec+' sec</div>','ai');speak(d2.extract.slice(0,280));return;}}}catch(e){}
+  try{let r3=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(w));if(r3.ok){let d3=await r3.json();if(d3.extract){let sec=((Date.now()-start)/1000).toFixed(1);th.remove();addMsg(d3.extract+'<div class="src">📍 Wikipedia • '+sec+' sec</div>','ai');speak(d3.extract.slice(0,280));return;}}}catch(e){}
+  // 4. WIKTIONARY
+  try{let r4=await fetch('https://sw.wiktionary.org/api/rest_v1/page/definition/'+encodeURIComponent(w));if(r4.ok){let d4=await r4.json();let def=d4?.sw?.[0]?.definitions?.[0]?.definition;if(def){let c=def.replace(/<[^>]*>/g,'');th.remove();addMsg('Maana ya '+w+' ni: '+c,'ai');speak(c);return;}}}catch(e){}
+  th.remove();addMsg('Sikupata jibu Google sasa. Washa data na jaribu tena.','ai');
 }
 </script></body></html>
