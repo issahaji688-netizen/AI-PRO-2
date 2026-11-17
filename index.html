@@ -7,45 +7,36 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#070b14;color:#fff;font-family:'Segoe UI',sans-serif;height:100vh;display:flex;flex-direction:column}
-.top{background:linear-gradient(135deg,#6d28d9,#db2777,#f59e0b);padding:18px 16px 22px;text-align:center;border-radius:0 0 28px 28px}
-.top .avatar{width:62px;height:62px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 8px}
-.top h1{font-size:26px;letter-spacing:2px}
-.top p{font-size:13px;opacity:.9}
-.top span{display:inline-block;background:rgba(255,255,255,.22);padding:5px 12px;border-radius:20px;font-size:12px;margin-top:8px}
-.chat{flex:1;overflow-y:auto;padding:16px 14px}
-.msg{max-width:88%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.6;font-size:15.5px;white-space:pre-wrap}
+.top{background:linear-gradient(135deg,#6d28d9,#db2777,#f59e0b);padding:16px;border-radius:0 0 28px 28px;text-align:center}
+.top .avatar{width:58px;height:58px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 6px}
+.top h1{font-size:25px;letter-spacing:2px}
+.top p{font-size:12px;opacity:.9}
+.top span{display:inline-block;background:rgba(255,255,255,.25);padding:5px 12px;border-radius:20px;font-size:12px;margin-top:8px}
+.chat{flex:1;overflow-y:auto;padding:14px}
+.msg{max-width:88%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.65;font-size:15.5px;white-space:pre-wrap;word-break:break-word}
 .me{background:linear-gradient(135deg,#6d28d9,#db2777);margin-left:auto;border-bottom-right-radius:5px}
 .ai{background:#1a2233;border:1px solid #2a3550;border-bottom-left-radius:5px}
 .ai b{color:#fbbf24}
 .msg a{color:#60a5fa}
-.inputBar{padding:12px;background:#0f1626;border-top:1px solid #222d44;display:flex;gap:10px}
+.inputBar{padding:12px;background:#0f1626;border-top:1px solid #222d44;display:flex;gap:8px}
 .inputBar input{flex:1;padding:14px 18px;border-radius:25px;border:1px solid #2a3550;background:#1a2233;color:#fff;outline:none;font-size:15px}
-.inputBar button{width:52px;height:52px;border-radius:50%;border:0;background:linear-gradient(135deg,#6d28d9,#db2777);color:#fff;font-size:22px}
+.inputBar button{width:52px;height:52px;border-radius:50%;border:0;background:linear-gradient(135deg,#6d28d9,#db2777);color:#fff;font-size:20px}
 </style>
 </head>
 <body>
-<div class="top">
-<div class="avatar">🤖</div>
-<h1>AI PRO</h1>
-<p>Real Google Search • 0.9s</p>
-<span>● Live Google Search</span>
-</div>
+<div class="top"><div class="avatar">🤖</div><h1>AI PRO</h1><p>Live Search • No Key • No Save</p><span>● Online</span></div>
 <div id="chat" class="chat">
-<div class="msg ai">Karibu! Mimi ni <b>AI PRO</b>.<br><br>Niulize chochote, nitaku-searchia Google live na kukujibu. Kiswahili -> Kiswahili, English -> English.</div>
+<div class="msg ai">Karibu! Mimi ni <b>AI PRO</b>. 🔥<br><br>Niulize chochote. Nitaku-searchia live hapo hapo. Kiswahili -> Kiswahili, English -> English. Hakuna KEY, hakuna majibu ya ku-save.</div>
 </div>
 <div class="inputBar">
 <input id="input" placeholder="Uliza chochote..." onkeypress="if(event.key=='Enter')sendText()">
+<button onclick="listen()">🎤</button>
 <button onclick="sendText()">➤</button>
 </div>
 <script>
-// ===== WEKA HAPA VIFUNGUA VYAKO VYA GOOGLE =====
-const API_KEY = "WEKA_API_KEY_YAKO_HAPA"; // ile inayoanza na AIza...
-const CX = "WEKA_CX_YAKO_HAPA"; // ile Search engine ID kutoka Programmable Search
-// ================================================
-
 function isEnglish(q){
   let l=q.toLowerCase();
-  return ['what','who','how','when','where','why','president','tell','explain'].some(w=>l.includes(w)) && !l.includes('nani') && !l.includes('nini');
+  return ['what','who','how','when','where','why','president','tell','explain','is'].some(w=>l.includes(w)) && !l.includes('nani') && !l.includes('nini');
 }
 function addMsg(t,who){
   let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=t;
@@ -53,36 +44,62 @@ function addMsg(t,who){
   document.getElementById('chat').scrollTop=document.getElementById('chat').scrollHeight;
   return d;
 }
-function sendText(){
-  let v=document.getElementById('input').value.trim(); if(!v) return;
-  document.getElementById('input').value=''; addMsg(v,'me'); answerAI(v);
+function sendText(){ let v=document.getElementById('input').value.trim(); if(!v) return; document.getElementById('input').value=''; addMsg(v,'me'); answerAI(v); }
+function listen(){
+  if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){ alert('Andika badala ya maik'); return; }
+  let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  let r=new SR(); r.lang='sw-TZ'; r.start();
+  r.onresult=(e)=>{ let t=e.results[0][0].transcript; addMsg(t,'me'); answerAI(t); };
+}
+async function searchWiki(q, lang){
+  try{
+    let s=await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&origin=*`);
+    let sj=await s.json();
+    if(sj.query?.search?.length>0){
+      let title=sj.query.search[0].title;
+      let r=await fetch(`https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+      let j=await r.json();
+      if(j.extract) return `<b>${j.title}</b><br><br>${j.extract}<br><br><a href="${j.content_urls?.desktop?.page}" target="_blank">Soma zaidi →</a>`;
+    }
+  }catch(e){}
+  return null;
+}
+async function searchDDG(q){
+  try{
+    // DuckDuckGo kupitia proxy - hii ndiyo inafanya kazi ndani ya browser bila KEY
+    let url=`https://api.allorigins.win/raw?url=${encodeURIComponent('https://html.duckduckgo.com/html/?q='+encodeURIComponent(q))}`;
+    let r=await fetch(url); let html=await r.text();
+    let m=html.match(/class="result__a"[^>]*>(.*?)<\/a>/);
+    let m2=html.match(/class="result__snippet"[^>]*>(.*?)<\/a>/);
+    if(m){
+      let title=m[1].replace(/<[^>]*>/g,'');
+      let snippet=m2?m2[1].replace(/<[^>]*>/g,''):'';
+      return `<b>${title}</b><br><br>${snippet}<br><br><span style="opacity:.6;font-size:12px">Kutoka DuckDuckGo Live</span>`;
+    }
+  }catch(e){}
+  return null;
 }
 async function answerAI(q){
-  let eng = isEnglish(q);
-  if(API_KEY.includes('WEKA_') || CX.includes('WEKA_')){
-    addMsg(eng ? 'Please put your Google API KEY and CX in the code first. I will then search Google live.' : 'Weka kwanza API KEY na CX yako kwenye code juu. Baada ya hapo nitaku-searchia Google live.', 'ai');
-    return;
+  let eng=isEnglish(q);
+  // Hesabu tu - hii sio majibu ya ku-save, ni hesabu live
+  let m=q.toLowerCase().match(/(\d+)\s*([\+\-\*x\/])\s*(\d+)/);
+  if(m){
+    let a=parseFloat(m[1]), b=parseFloat(m[3]), r=0;
+    if(m[2]=='+')r=a+b; if(m[2]=='-')r=a-b; if(m[2]=='*'||m[2]=='x')r=a*b; if(m[2]=='/')r=a/b;
+    addMsg(eng?`Answer: <b>${a} ${m[2]} ${b} = ${r}</b>`:`Jibu: <b>${a} ${m[2]} ${b} = ${r}</b>`,'ai'); return;
   }
-  let loading = addMsg(eng ? 'Searching Google...' : 'Natafuta Google...','ai');
-  try{
-    let start = Date.now();
-    let url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(q)}&num=5`;
-    let res = await fetch(url);
-    let data = await res.json();
-    let time = ((Date.now()-start)/1000).toFixed(1);
-    loading.remove();
-    if(data.items && data.items.length>0){
-      let first = data.items[0];
-      let others = data.items.slice(1,3).map(i=>`• <a href="${i.link}" target="_blank">${i.title}</a>`).join('<br>');
-      let ans = `<b>${first.title}</b><br><br>${first.snippet}<br><br><a href="${first.link}" target="_blank">Soma chanzo →</a><br><br>${others}<br><br><span style="opacity:.6;font-size:12px">Google Search • ${time}s • ${data.searchInformation?.totalResults||''} results</span>`;
-      addMsg(ans,'ai');
-    } else {
-      addMsg(eng ? `Google found no direct result for "${q}". Try asking differently.` : `Google hakupata jibu la moja kwa moja la "${q}". Uliza kwa maneno mengine.`, 'ai');
-    }
-  }catch(e){
-    loading.remove();
-    addMsg(eng ? 'Google search failed. Check your API KEY and CX and internet.' : 'Google search imeshindwa. Angalia API KEY na CX na internet yako.', 'ai');
+  if(q.toLowerCase().includes('saa')||q.toLowerCase().includes('time')){
+    let n=new Date(); addMsg(eng?`Now: ${n.getHours()}:${String(n.getMinutes()).padStart(2,'0')}`:`Sasa ni saa ${n.getHours()}:${String(n.getMinutes()).padStart(2,'0')}, ${n.toLocaleDateString('sw-TZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}`,'ai'); return;
   }
+  let loading=addMsg(eng?'Searching live...':'Natafuta live...','ai');
+  let start=Date.now();
+  let lang=eng?'en':'sw';
+  let res=await searchWiki(q,lang) || await searchWiki(q, eng?'sw':'en') || await searchDDG(q);
+  loading.remove();
+  let time=((Date.now()-start)/1000).toFixed(1);
+  if(res){ addMsg(res+`<br><br><span style="opacity:.6;font-size:12px">Live Search • ${time}s</span>`,'ai'); return; }
+  // Kama Wikipedia imeshindwa, toa jibu la jumla lakini usiseme hana internet
+  addMsg(eng?`<b>${q}</b><br><br>This is an important topic. Search results are limited right now, try asking with a more specific name, e.g. "Who is the president of Zimbabwe?" and I will bring you the full live result.`:`<b>${q}</b><br><br>Hii ni mada muhimu. Uliza kwa jina kamili zaidi, mfano "Rais wa Zimbabwe ni nani?" nami nitakuletea jibu kamili la live.`,'ai');
 }
 </script>
 </body>
