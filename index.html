@@ -3,163 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI PRO V2</title>
-<meta name="theme-color" content="#0b141a">
+<title>AI PRO</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b141a;color:#e9edef;font-family:sans-serif;padding-bottom:90px}
-.top{padding:16px;text-align:center;background:linear-gradient(135deg,#0f2027,#2c5364);position:sticky;top:0;z-index:10}
-.top h1{margin:0;font-size:30px}
-.top p{margin:4px 0 0;color:#00a884}
-.orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#00a884,#0f2027);margin:18px auto;display:flex;align-items:center;justify-content:center;font-size:55px;box-shadow:0 0 40px #00a884;cursor:pointer}
-.orb.listening{animation:pulse 1s infinite}
-@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-.status{text-align:center;color:#8696a0}
-.chat{padding:12px}
-.msg{max-width:88%;padding:12px 16px;border-radius:18px;margin:8px 0;line-height:1.55;white-space:pre-wrap}
-.me{background:#00a884;color:#0b141a;margin-left:auto;border-bottom-right-radius:4px}
-.ai{background:#202c33;border-bottom-left-radius:4px}
-.msg img{width:100%;border-radius:12px;margin-top:8px}
-.msg a{color:#53bdeb}
-.quick{display:flex;gap:8px;overflow:auto;padding:0 12px}
-.quick button{padding:9px 16px;border-radius:20px;border:0;background:#202c33;color:#fff;white-space:nowrap}
-.inputBar{position:fixed;bottom:0;left:0;right:0;background:#0b141a;display:flex;gap:8px;padding:10px;border-top:1px solid #222d34}
-.inputBar input{flex:1;padding:13px;border-radius:24px;border:1px solid #2a3942;background:#202c33;color:#fff;outline:0}
-.inputBar button{width:50px;height:50px;border-radius:50%;border:0;background:#00a884;font-size:22px}
-.setup{background:#111b21;margin:12px;border-radius:16px;padding:18px;text-align:center}
-.setup button{width:100%;padding:14px;border:0;border-radius:24px;background:#00a884;color:#0b141a;font-weight:700;font-size:16px;margin-top:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#070b14;color:#fff;font-family:'Segoe UI',sans-serif;height:100vh;display:flex;flex-direction:column}
+.top{background:linear-gradient(135deg,#6d28d9,#db2777,#f59e0b);padding:18px 16px 22px;text-align:center;border-radius:0 0 28px 28px}
+.top .avatar{width:62px;height:62px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 8px}
+.top h1{font-size:26px;letter-spacing:2px}
+.top p{font-size:13px;opacity:.9}
+.top span{display:inline-block;background:rgba(255,255,255,.22);padding:5px 12px;border-radius:20px;font-size:12px;margin-top:8px}
+.chat{flex:1;overflow-y:auto;padding:16px 14px}
+.msg{max-width:88%;padding:13px 16px;border-radius:20px;margin:8px 0;line-height:1.6;font-size:15.5px;white-space:pre-wrap}
+.me{background:linear-gradient(135deg,#6d28d9,#db2777);margin-left:auto;border-bottom-right-radius:5px}
+.ai{background:#1a2233;border:1px solid #2a3550;border-bottom-left-radius:5px}
+.ai b{color:#fbbf24}
+.msg a{color:#60a5fa}
+.inputBar{padding:12px;background:#0f1626;border-top:1px solid #222d44;display:flex;gap:10px}
+.inputBar input{flex:1;padding:14px 18px;border-radius:25px;border:1px solid #2a3550;background:#1a2233;color:#fff;outline:none;font-size:15px}
+.inputBar button{width:52px;height:52px;border-radius:50%;border:0;background:linear-gradient(135deg,#6d28d9,#db2777);color:#fff;font-size:22px}
 </style>
 </head>
 <body>
-<div class="top"><h1>AI PRO V2 🤖</h1><p>Akili + Internet + Search • Sauti Yako Tu</p></div>
-<div id="setup" class="setup">
-<h3>🔐 Weka Sauti Yako Kwanza</h3>
-<p style="color:#8696a0">Bonyeza chini, sema: <b>"AI PRO niko hapa"</b></p>
-<button onclick="enrollVoice()">🎤 Rekodi Sauti Yangu</button>
-<p id="enrollStatus" style="color:#00a884"></p>
-</div>
-<div class="orb" id="orb" onclick="listen()">🎤</div>
-<p class="status" id="status">Bonyeza duara au sema "Hey AI PRO"</p>
-<div class="quick">
-<button onclick="ask('Fungua camera')">📷 Camera</button>
-<button onclick="ask('Fungua file manager')">📁 Files</button>
-<button onclick="ask('Fungua Google')">🔍 Google</button>
-<button onclick="ask('Fungua contacts')">👥 Contacts</button>
-<button onclick="ask('Saa ngapi')">🕒 Saa</button>
-<button onclick="ask('Hali ya hewa')">🌤️ Hewa</button>
-<button onclick="ask('Nitengenezee picha ya gari')">🖼️ Picha</button>
+<div class="top">
+<div class="avatar">🤖</div>
+<h1>AI PRO</h1>
+<p>Real Google Search • 0.9s</p>
+<span>● Live Google Search</span>
 </div>
 <div id="chat" class="chat">
-<div class="msg ai">Habari! Mimi ni <b>AI PRO V2</b>. Sasa nina akili kubwa zaidi + internet. Niulize chochote - habari za mpira, historia, IT, hesabu, nani ni nani... Kama sijui, nita-search mwenyewe na nikujibu. 🔥</div>
+<div class="msg ai">Karibu! Mimi ni <b>AI PRO</b>.<br><br>Niulize chochote, nitaku-searchia Google live na kukujibu. Kiswahili -> Kiswahili, English -> English.</div>
 </div>
 <div class="inputBar">
-<input id="input" placeholder="Andika... Hey AI PRO" onkeypress="if(event.key=='Enter')sendText()">
-<button onclick="listen()">🎤</button>
+<input id="input" placeholder="Uliza chochote..." onkeypress="if(event.key=='Enter')sendText()">
 <button onclick="sendText()">➤</button>
 </div>
 <script>
-let myVoicePrint = localStorage.getItem('aiProVoice') || null;
-if(myVoicePrint){ document.getElementById('setup').style.display='none'; }
-function enrollVoice(){ document.getElementById('enrollStatus').innerText='Nasikiliza... Sema "AI PRO niko hapa"'; startRecognition(true); }
-function startRecognition(isEnroll=false){
-  if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)){ alert('Simu yako hai-support voice. Tumia kuandika.'); return; }
-  let SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  let recognition = new SR(); recognition.lang='sw-TZ'; recognition.interimResults=false;
-  document.getElementById('orb').classList.add('listening');
-  document.getElementById('status').innerText='🎧 Nasikiliza...';
-  recognition.start();
-  recognition.onresult=(e)=>{
-    let text=e.results[0][0].transcript;
-    document.getElementById('orb').classList.remove('listening');
-    if(isEnroll){
-      let print=btoa(text+'|'+e.results[0][0].confidence+'|'+navigator.userAgent.length);
-      localStorage.setItem('aiProVoice',print); myVoicePrint=print;
-      document.getElementById('enrollStatus').innerText='✅ Sauti yako imehifadhiwa!';
-      document.getElementById('setup').style.display='none'; speak('Sawa, sasa nakujua. Nitasikiliza sauti yako tu.');
-    } else { addMsg(text,'me'); answerAI(text); }
-  };
-  recognition.onerror=()=>{ document.getElementById('orb').classList.remove('listening'); document.getElementById('status').innerText='Jaribu tena'; };
+// ===== WEKA HAPA VIFUNGUA VYAKO VYA GOOGLE =====
+const API_KEY = "WEKA_API_KEY_YAKO_HAPA"; // ile inayoanza na AIza...
+const CX = "WEKA_CX_YAKO_HAPA"; // ile Search engine ID kutoka Programmable Search
+// ================================================
+
+function isEnglish(q){
+  let l=q.toLowerCase();
+  return ['what','who','how','when','where','why','president','tell','explain'].some(w=>l.includes(w)) && !l.includes('nani') && !l.includes('nini');
 }
-function listen(){ startRecognition(false); }
-function sendText(){ let v=document.getElementById('input').value.trim(); if(!v) return; document.getElementById('input').value=''; addMsg(v,'me'); answerAI(v); }
-function ask(q){ addMsg(q,'me'); answerAI(q); }
-function addMsg(text,who){ let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=text; document.getElementById('chat').appendChild(d); window.scrollTo(0,document.body.scrollHeight); return d; }
-function speak(text){ if(!('speechSynthesis' in window)) return; window.speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g,'')); u.lang='sw-TZ'; window.speechSynthesis.speak(u); }
-
-// --- AKILI ILIYOONGEZWA ---
-const BRAIN = [
-  {k:['habari','mambo','hello','hey','vipi'], a:'Habari! Niko vizuri sana, na wewe? Niambie nikusaidie nini leo - ni-search habari, nikujibu swali, au nifungue Camera / Google?'},
-  {k:['jina lako','unaitwa nani','wewe ni nani'], a:'Mimi ni AI PRO V2. Msaidizi wako wa binafsi. Nasikiliza sauti yako tu, nina akili + internet. Niulize chochote.'},
-  {k:['rais wa tanzania','president wa tanzania'], a:'Rais wa Tanzania ni Samia Suluhu Hassan. Alingia madarakani Machi 2021 baada ya kifo cha John Magufuli. Kama unataka habari mpya za leo, niambie "search Rais wa Tanzania leo".'},
-  {k:['rais wa marekani','president wa marekani','president wa america'], a:'Rais wa Marekani sasa ni Donald Trump (alirudi madarakani Januari 2025). Kabla yake alikuwa Joe Biden. Kama unataka habari za leo, niambie ni-search.'},
-  {k:['rais wa kenya'], a:'Rais wa Kenya ni William Ruto, alingia madarakani Septemba 2022.'},
-  {k:['simba','yanga'], a:'Simba SC na Yanga SC ni timu kubwa zaidi Tanzania, zinaitwa Kariakoo Derby. Derby yao ni kubwa Afrika Mashariki. Ukitaka matokeo ya mechi ya mwisho, niambie "search Simba Yanga matokeo ya leo".'},
-  {k:['mpira','soka','football','ligi kuu'], a:'Kwenye mpira, niambie unataka nini: matokeo ya Simba/Yanga, Ligi Kuu Tanzania, EPL, La Liga, au Champions League? Nitaku-searchia matokeo ya leo.'},
-  {k:['diamond','harmonize','zuchu','alibaba'], a:'Wasanii wakubwa Tanzania ni Diamond Platnumz, Harmonize, Zuchu, Marioo, Rayvanny. Ukitaka nyimbo mpya, niambie ni-search.'},
-  {k:['saa ngapi','tarehe','leo ni'], a:''}, // itajazwa live
-  {k:['hewa','mvua','jua','hali ya hewa'], a:'Mwanza / Dar es Salaam leo: Joto karibu 28-30°C, mawingu kidogo, kuna uwezekano wa mvua kidogo jioni. Kama una internet nitaku-searchia hali ya hewa ya live ya Mwanza.'},
-  {k:['hesabu','plus','+','-','x','/','gawanya','jumlisha'], a:'Hesabu: Niambie kama "25 + 40 ni ngapi" au "100 / 4" nitakujibu hapo hapo. Jaribu kuandika hesabu yako.'},
-  {k:['code','program','python','html','javascript','it','server','network','computer'], a:'Kwenye IT: Python ni rahisi kwa kuanzia, HTML/CSS kwa website, JavaScript kwa kuifanya website iwe hai. Server ni kompyuta kubwa inayohifadhi website. Unataka nikufundishe nini hasa - Python, HTML, au Network?'},
-  {k:['internet ni nini','wifi'], a:'Internet ni mtandao mkubwa unaounganisha kompyuta na simu duniani kote. WiFi ni njia ya kuunganisha simu yako na internet bila waya.'},
-  {k:['maji','umeme','luku'], a:'Kwenye maji na umeme, TANESCO ndio wa umeme, DAWASA / MWAUWASA ndio wa maji. Ukitaka namba za huduma au bei ya LUKU ya leo, niambie ni-search.'},
-  {k:['asante','sawa','poa','shukrani'], a:'Karibu sana! Niko hapa muda wote kwa ajili yako tu. Uliza swali lingine.'},
-  {k:['nampenda','mapenzi','mchumba'], a:'Mapenzi ni jambo zuri 😊 Lakini mimi ni AI, siwezi kuwa mchumba. Nikusaidie kuandika ujumbe mzuri wa kumtumia mtu unayempenda? Niambie jina lake.'},
-  {k:['dini','mungu','yesu','allah'], a:'Dini ni imani ya mtu. Tanzania tuna Wakristo na Waislamu wengi, na wote wanaishi kwa amani. Kila mtu ana haki ya kuabudu anachokiamini.'},
-  {k:['historia ya tanzania'], a:'Tanzania ilipata uhuru 9 Desemba 1961 (Tanganyika) na Zanzibar 1963, zikaungana 26 Aprili 1964 na kuitwa Tanzania. Baba wa Taifa ni Mwalimu Julius Nyerere.'},
-  {k:['julius nyerere'], a:'Mwalimu Julius Kambarage Nyerere ndiye Rais wa kwanza wa Tanzania na Baba wa Taifa. Anajulikana kwa Ujamaa na elimu bure.'},
-  {k:['magufuli'], a:'John Pombe Magufuli alikuwa Rais wa 5 wa Tanzania (2015-2021). Alijulikana kama "Bulldozer" kwa kazi na kupambana na ufisadi.'},
-  {k:['elimu','shule','chuo','masomo'], a:'Elimu ni ufunguo wa maisha. Tanzania, elimu ya msingi hadi kidato cha 4 sasa ni bure. Unasoma nini? Nikusaidie masomo gani?'},
-  {k:['biashara','pesa','fedha','kufanya pesa'], a:'Biashara nzuri za kuanza kwa mtaji mdogo Mwanza: kuuza mitumba, chakula, bodaboda, kuuza simu na accessories, au kufanya biashara mtandaoni. Unataka wazo gani hasa - mtaji mdogo au mkubwa?'},
-  {k:['ugonjwa','daktari','afya','maumivu'], a:'Pole sana kwa kuumwa. Kama ni dharura, nenda hospitali haraka. Mimi siwezi kutibu. Kama ni homa ndogo, pumzika, kunywa maji mengi. Ukiwa na dalili kali, tafuta daktari.'},
-];
-
-function findInBrain(q){
-  let lower=q.toLowerCase();
-  // Hesabu live
-  let math = lower.match(/(\d+)\s*([\+\-\*x\/])\s*(\d+)/);
-  if(math){ let a=parseFloat(math[1]), b=parseFloat(math[3]), op=math[2], res=0; if(op=='+')res=a+b; if(op=='-')res=a-b; if(op=='*'||op=='x')res=a*b; if(op=='/')res=a/b; return `Hesabu: ${a} ${op} ${b} = <b>${res}</b>`; }
-  if(lower.includes('saa')||lower.includes('tarehe')||lower.includes('leo ni')){ let now=new Date(); return `Sasa ni saa ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}, tarehe ${now.toLocaleDateString('sw-TZ',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}.`; }
-  for(let item of BRAIN){ for(let k of item.k){ if(k && lower.includes(k) && item.a) return item.a; } }
-  return null;
+function addMsg(t,who){
+  let d=document.createElement('div'); d.className='msg '+who; d.innerHTML=t;
+  document.getElementById('chat').appendChild(d);
+  document.getElementById('chat').scrollTop=document.getElementById('chat').scrollHeight;
+  return d;
 }
-
-async function searchWeb(q){
-  try{
-    // 1. Wikipedia - bora kwa "nani ni..."
-    let wikiRes = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(q));
-    if(wikiRes.ok){ let j=await wikiRes.json(); if(j.extract){ return `Kutoka Wikipedia:\n\n<b>${j.title}</b>\n${j.extract}\n\n<a href="${j.content_urls?.desktop?.page||'https://wikipedia.org'}" target="_blank">Soma zaidi Wikipedia →</a>`; } }
-  }catch(e){}
-  try{
-    // 2. DuckDuckGo Instant Answer
-    let ddg = await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1');
-    let j = await ddg.json();
-    if(j.AbstractText){ return `Kutoka Internet (DuckDuckGo):\n\n${j.AbstractText}\n\nChanzo: ${j.AbstractSource||'DuckDuckGo'}`; }
-    if(j.RelatedTopics && j.RelatedTopics[0] && j.RelatedTopics[0].Text){ return `Kutoka Internet:\n\n${j.RelatedTopics[0].Text}`; }
-  }catch(e){}
-  return null;
+function sendText(){
+  let v=document.getElementById('input').value.trim(); if(!v) return;
+  document.getElementById('input').value=''; addMsg(v,'me'); answerAI(v);
 }
-
 async function answerAI(q){
-  let lower=q.toLowerCase();
-  let reply=''; let img='';
-  if(lower.includes('camera')||lower.includes('piga picha')){ reply='Nimefungua Camera 📷 - Chukua picha sasa!'; setTimeout(()=>{ window.open('https://camera.app','_blank'); },500); }
-  else if(lower.includes('file')||lower.includes('manager')||lower.includes('faili')){ reply='Nimefungua File Manager 📁 - Chagua faili unalotaka.'; setTimeout(()=>{ let i=document.createElement('input'); i.type='file'; i.click(); },500); }
-  else if(lower.includes('google')){ let query=q.replace(/fungua google|google/gi,'').trim()||'IT Community'; reply=`Nimefungua Google na nimekutafutia "${query}" 🔍`; setTimeout(()=>window.open('https://www.google.com/search?q='+encodeURIComponent(query),'_blank'),600); }
-  else if(lower.includes('contact')||lower.includes('mawasiliano')){ reply='Nimefungua Contacts 👥 - Chagua mtu unayemtaka.'; }
-  else if(lower.includes('picha')||lower.includes('tengeneza picha')||lower.includes('image')){ reply='Nimekutengenezea picha uliyoomba 🖼️ Hii hapa:'; img='https://picsum.photos/500/300?random='+Math.floor(Math.random()*100); }
-  else {
-    let brainAns = findInBrain(q);
-    if(brainAns){ reply=brainAns; }
-    else {
-      let loading = addMsg('🔍 Natafuta internet... subiri sekunde kidogo...','ai');
-      let web = await searchWeb(q);
-      loading.remove();
-      if(web){ reply=web; }
-      else { reply=`Nimekuelewa: "${q}".\n\nNimejaribu ku-search internet lakini sasa sina majibu ya uhakika. Jaribu kuuliza kwa maneno mengine, mfano "Nani ni Rais wa Tanzania?" au "Simba na Yanga" au "Hesabu 25 + 40".\n\nNa kama unataka nifungue Camera, Google, Contacts - niambie tu.`; }
-    }
+  let eng = isEnglish(q);
+  if(API_KEY.includes('WEKA_') || CX.includes('WEKA_')){
+    addMsg(eng ? 'Please put your Google API KEY and CX in the code first. I will then search Google live.' : 'Weka kwanza API KEY na CX yako kwenye code juu. Baada ya hapo nitaku-searchia Google live.', 'ai');
+    return;
   }
-  let html=reply; if(img) html+=`<br><img src="${img}">`;
-  addMsg(html,'ai'); speak(reply);
+  let loading = addMsg(eng ? 'Searching Google...' : 'Natafuta Google...','ai');
+  try{
+    let start = Date.now();
+    let url = `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${encodeURIComponent(q)}&num=5`;
+    let res = await fetch(url);
+    let data = await res.json();
+    let time = ((Date.now()-start)/1000).toFixed(1);
+    loading.remove();
+    if(data.items && data.items.length>0){
+      let first = data.items[0];
+      let others = data.items.slice(1,3).map(i=>`• <a href="${i.link}" target="_blank">${i.title}</a>`).join('<br>');
+      let ans = `<b>${first.title}</b><br><br>${first.snippet}<br><br><a href="${first.link}" target="_blank">Soma chanzo →</a><br><br>${others}<br><br><span style="opacity:.6;font-size:12px">Google Search • ${time}s • ${data.searchInformation?.totalResults||''} results</span>`;
+      addMsg(ans,'ai');
+    } else {
+      addMsg(eng ? `Google found no direct result for "${q}". Try asking differently.` : `Google hakupata jibu la moja kwa moja la "${q}". Uliza kwa maneno mengine.`, 'ai');
+    }
+  }catch(e){
+    loading.remove();
+    addMsg(eng ? 'Google search failed. Check your API KEY and CX and internet.' : 'Google search imeshindwa. Angalia API KEY na CX na internet yako.', 'ai');
+  }
 }
 </script>
 </body>
